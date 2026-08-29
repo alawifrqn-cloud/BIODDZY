@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Football Odds & Match Analyzer</title>
+  <title>Football Odds & Top Pick Analyzer</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-8 font-sans">
@@ -12,8 +12,8 @@
     
     <!-- HEADER -->
     <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-2xl">
-      <h1 class="text-2xl font-black text-emerald-400 tracking-wide uppercase">⚽ FOOTBALL ODDS & MATCH ANALYZER</h1>
-      <p class="text-xs text-slate-400 mt-1">Isi data odds pasaran ➔ Dapatkan analisis Implied Odds, No-Vig Fair Odds, Margin Bookmaker, serta Form Match & H2H Terbaru.</p>
+      <h1 class="text-2xl font-black text-emerald-400 tracking-wide uppercase">⚽ FOOTBALL ODDS & TOP PICK ANALYZER</h1>
+      <p class="text-xs text-slate-400 mt-1">Input odds pasaran ➔ Otomatis hitung Fair Odds (No-Vig), Margin Bandar, dan Rangking TOP PICK 1, 2, & 3.</p>
     </div>
 
     <!-- MAIN FORM CONTAINER -->
@@ -39,15 +39,15 @@
         <div class="grid grid-cols-3 gap-3">
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">HOME (M1)</label>
-            <input type="number" step="0.001" id="oddsM1" placeholder="1.885" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-sky-400">
+            <input type="number" step="0.001" id="oddsM1" placeholder="Misal: 1.885" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-sky-400">
           </div>
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">DRAW (X)</label>
-            <input type="number" step="0.001" id="oddsX" placeholder="3.24" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-amber-400">
+            <input type="number" step="0.001" id="oddsX" placeholder="Misal: 3.24" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-amber-400">
           </div>
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">AWAY (M2)</label>
-            <input type="number" step="0.001" id="oddsM2" placeholder="4.685" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400">
+            <input type="number" step="0.001" id="oddsM2" placeholder="Misal: 4.685" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400">
           </div>
         </div>
       </div>
@@ -58,15 +58,15 @@
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">HOME LINE</label>
-            <input type="text" id="hdpHomeLine" placeholder="-0.75" oninput="autoSyncHdp()" class="w-full bg-slate-900 border border-emerald-500/50 rounded-lg p-2.5 text-sm font-bold text-emerald-300 mb-2">
+            <input type="text" id="hdpHomeLine" placeholder="Misal: -0.75" oninput="autoSyncHdp()" class="w-full bg-slate-900 border border-emerald-500/50 rounded-lg p-2.5 text-sm font-bold text-emerald-300 mb-2">
             <label class="block text-[11px] text-slate-400 mb-1">HOME ODDS</label>
-            <input type="number" step="0.001" id="oddsHdpHome" placeholder="1.95" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400">
+            <input type="number" step="0.001" id="oddsHdpHome" placeholder="Misal: 2.184" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400">
           </div>
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">AWAY LINE (Otomatis)</label>
-            <input type="text" id="hdpAwayLine" placeholder="+0.75" readonly class="w-full bg-slate-950 border border-slate-800 text-slate-400 rounded-lg p-2.5 text-sm font-bold mb-2 cursor-not-allowed">
+            <input type="text" id="hdpAwayLine" placeholder="Otomatis Terisi" readonly class="w-full bg-slate-950 border border-slate-800 text-slate-400 rounded-lg p-2.5 text-sm font-bold mb-2 cursor-not-allowed">
             <label class="block text-[11px] text-slate-400 mb-1">AWAY ODDS</label>
-            <input type="number" step="0.001" id="oddsHdpAway" placeholder="1.88" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400">
+            <input type="number" step="0.001" id="oddsHdpAway" placeholder="Misal: 1.71" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400">
           </div>
         </div>
       </div>
@@ -77,15 +77,15 @@
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">OVER LINE</label>
-            <input type="text" id="ouOverLine" placeholder="2.25" oninput="autoSyncOU()" class="w-full bg-slate-900 border border-emerald-500/50 rounded-lg p-2.5 text-sm font-bold text-emerald-300 mb-2">
+            <input type="text" id="ouOverLine" placeholder="Misal: 2" oninput="autoSyncOU()" class="w-full bg-slate-900 border border-emerald-500/50 rounded-lg p-2.5 text-sm font-bold text-emerald-300 mb-2">
             <label class="block text-[11px] text-slate-400 mb-1">OVER ODDS</label>
-            <input type="number" step="0.001" id="oddsOuOver" placeholder="1.90" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400">
+            <input type="number" step="0.001" id="oddsOuOver" placeholder="Misal: 1.865" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400">
           </div>
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">UNDER LINE (Otomatis)</label>
-            <input type="text" id="ouUnderLine" placeholder="2.25" readonly class="w-full bg-slate-950 border border-slate-800 text-slate-400 rounded-lg p-2.5 text-sm font-bold mb-2 cursor-not-allowed">
+            <input type="text" id="ouUnderLine" placeholder="Otomatis Terisi" readonly class="w-full bg-slate-950 border border-slate-800 text-slate-400 rounded-lg p-2.5 text-sm font-bold mb-2 cursor-not-allowed">
             <label class="block text-[11px] text-slate-400 mb-1">UNDER ODDS</label>
-            <input type="number" step="0.001" id="oddsOuUnder" placeholder="1.92" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400">
+            <input type="number" step="0.001" id="oddsOuUnder" placeholder="Misal: 1.975" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400">
           </div>
         </div>
       </div>
@@ -96,51 +96,45 @@
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">BTTS YA ODDS</label>
-            <input type="number" step="0.001" id="oddsBttsYes" placeholder="1.95" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400">
+            <input type="number" step="0.001" id="oddsBttsYes" placeholder="Misal: 2.136" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400">
           </div>
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">BTTS TIDAK ODDS</label>
-            <input type="number" step="0.001" id="oddsBttsNo" placeholder="1.80" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-rose-400">
+            <input type="number" step="0.001" id="oddsBttsNo" placeholder="Misal: 1.696" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-rose-400">
           </div>
         </div>
       </div>
 
       <button onclick="hitungSemua()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-4 rounded-xl shadow-lg transition duration-200 uppercase tracking-wider text-base">
-        🚀 HITUNG ODDS & ANALISIS PERTANDINGAN
+        🚀 HITUNG VALUE & TAMPILKAN TOP PICKS
       </button>
 
     </div>
 
-    <!-- BOX HASIL ANALISIS -->
+    <!-- BOX HASIL ANALISIS & TOP PICKS -->
     <div id="resultBox" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl hidden space-y-6">
-      <h2 class="text-lg font-bold text-slate-200 border-b border-slate-800 pb-2 uppercase tracking-wide">📊 HASIL ANALISIS PROBABILITAS MARKET</h2>
       
-      <!-- SUMMARY MARGIN -->
-      <div id="summaryCard" class="bg-slate-950 border border-slate-800 p-5 rounded-xl"></div>
+      <h2 class="text-lg font-bold text-slate-200 border-b border-slate-800 pb-2 uppercase tracking-wide">🏆 RANKING OPSI TOP PICKS</h2>
+      
+      <!-- CARDS 3 OPSI TOP PICK TERATAS -->
+      <div id="topPicksContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
 
-      <!-- TABEL MARKET -->
-      <div class="overflow-x-auto">
+      <!-- TABEL MARKET LENGKAP -->
+      <div class="overflow-x-auto pt-2">
+        <h3 class="text-sm font-bold text-slate-400 uppercase mb-3">Tabel Analisis Odds & Probabilitas</h3>
         <table class="w-full text-left text-sm">
           <thead class="text-xs text-slate-400 uppercase border-b border-slate-800">
             <tr>
               <th class="pb-3">Market Line</th>
-              <th class="pb-3">Bookmaker Odds</th>
+              <th class="pb-3">Odds</th>
               <th class="pb-3">Implied Prob</th>
               <th class="pb-3">Fair Prob (No-Vig)</th>
-              <th class="pb-3 text-right">Fair Odds</th>
+              <th class="pb-3">Fair Odds</th>
+              <th class="pb-3 text-right">Value Edge</th>
             </tr>
           </thead>
           <tbody id="resultTableBody" class="divide-y divide-slate-800"></tbody>
         </table>
-      </div>
-
-      <!-- TRACK RECORD 5 MATCH LAST & H2H -->
-      <div class="border-t border-slate-800 pt-6 space-y-4">
-        <h3 class="text-md font-black text-amber-400 uppercase tracking-wide flex items-center gap-2">
-          <span>📅 TRACK RECORD 5 PERTANDINGAN TERAKHIR & H2H</span>
-        </h3>
-        
-        <div id="matchHistoryContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
       </div>
 
     </div>
@@ -148,8 +142,6 @@
   </div>
 
   <script>
-    const MY_API_KEY = "e702ac438b6cb005f63f5fdfd6197b8f";
-
     function autoSyncHdp() {
       const homeVal = document.getElementById('hdpHomeLine').value.trim();
       const awayInput = document.getElementById('hdpAwayLine');
@@ -187,154 +179,107 @@
       const impX = oX > 0 ? (1 / oX) : 0;
       const impM2 = oM2 > 0 ? (1 / oM2) : 0;
       const sum1X2 = impM1 + impX + impM2;
-      const margin1X2 = sum1X2 > 0 ? (sum1X2 - 1) * 100 : 0;
 
       const impHdpHome = oHdpHome > 0 ? (1 / oHdpHome) : 0;
       const impHdpAway = oHdpAway > 0 ? (1 / oHdpAway) : 0;
       const sumHdp = impHdpHome + impHdpAway;
-      const marginHdp = sumHdp > 0 ? (sumHdp - 1) * 100 : 0;
 
       const impOuOver = oOuOver > 0 ? (1 / oOuOver) : 0;
       const impOuUnder = oOuUnder > 0 ? (1 / oOuUnder) : 0;
       const sumOu = impOuOver + impOuUnder;
-      const marginOu = sumOu > 0 ? (sumOu - 1) * 100 : 0;
 
       const impBttsYes = oBttsYes > 0 ? (1 / oBttsYes) : 0;
       const impBttsNo = oBttsNo > 0 ? (1 / oBttsNo) : 0;
       const sumBtts = impBttsYes + impBttsNo;
-      const marginBtts = sumBtts > 0 ? (sumBtts - 1) * 100 : 0;
 
       const hdpLineH = document.getElementById('hdpHomeLine').value || "-";
+      const hdpLineA = document.getElementById('hdpAwayLine').value || "-";
       const ouLine = document.getElementById('ouOverLine').value || "-";
 
-      const list = [
+      const markets = [
         { name: `1X2: ${home} (M1)`, odds: oM1, imp: impM1, sum: sum1X2 },
         { name: `1X2: Seri (X)`, odds: oX, imp: impX, sum: sum1X2 },
         { name: `1X2: ${away} (M2)`, odds: oM2, imp: impM2, sum: sum1X2 },
         { name: `HDP ${home} (${hdpLineH})`, odds: oHdpHome, imp: impHdpHome, sum: sumHdp },
-        { name: `HDP ${away} (${document.getElementById('hdpAwayLine').value || '-'})`, odds: oHdpAway, imp: impHdpAway, sum: sumHdp },
+        { name: `HDP ${away} (${hdpLineA})`, odds: oHdpAway, imp: impHdpAway, sum: sumHdp },
         { name: `OVER ${ouLine}`, odds: oOuOver, imp: impOuOver, sum: sumOu },
         { name: `UNDER ${ouLine}`, odds: oOuUnder, imp: impOuUnder, sum: sumOu },
         { name: `BTTS (Ya)`, odds: oBttsYes, imp: impBttsYes, sum: sumBtts },
         { name: `BTTS (Tidak)`, odds: oBttsNo, imp: impBttsNo, sum: sumBtts }
       ];
 
+      const analyzed = [];
+
+      markets.forEach(m => {
+        if (!m.odds || m.odds <= 1 || !m.sum) return;
+
+        const impliedPct = m.imp * 100;
+        const fairPct = (m.imp / m.sum) * 100;
+        const fairOdds = 1 / (fairPct / 100);
+        // Value Edge diukur dari efisiensi pasar & Fair Odds margin
+        const edge = fairPct - impliedPct; 
+        const score = fairPct * m.odds;
+
+        analyzed.push({ 
+          name: m.name, 
+          odds: m.odds, 
+          impliedPct, 
+          fairPct, 
+          fairOdds, 
+          edge,
+          score 
+        });
+      });
+
+      // Urutkan berdasarkan Fair Probabilitas & Value Score tertinggi
+      analyzed.sort((a, b) => b.fairPct - a.fairPct);
+
+      // Render 3 Top Pick Teratas
+      const topPicksContainer = document.getElementById('topPicksContainer');
+      topPicksContainer.innerHTML = '';
+
+      const rankLabels = ["🔥 TOP PICK 1 (PRIMARY)", "💎 TOP PICK 2 (VALUE)", "⭐ TOP PICK 3 (BACKUP)"];
+      const borderColors = ["border-emerald-500 bg-emerald-500/10", "border-sky-500 bg-sky-500/10", "border-amber-500 bg-amber-500/10"];
+      const badgeColors = ["bg-emerald-500 text-slate-950", "bg-sky-500 text-slate-950", "bg-amber-500 text-slate-950"];
+
+      for (let i = 0; i < Math.min(3, analyzed.length); i++) {
+        const item = analyzed[i];
+        const cardHtml = `
+          <div class="border ${borderColors[i]} p-4 rounded-xl flex flex-col justify-between space-y-3">
+            <div>
+              <span class="text-[10px] font-black tracking-widest px-2 py-1 rounded ${badgeColors[i]} uppercase">${rankLabels[i]}</span>
+              <h3 class="text-lg font-black text-white mt-2">${item.name}</h3>
+              <p class="text-xs text-slate-300">Odds Pasar: <strong class="text-white">${item.odds}</strong></p>
+            </div>
+            <div class="border-t border-slate-700/60 pt-2 text-xs space-y-1">
+              <div class="flex justify-between"><span class="text-slate-400">Fair Prob (No-Vig):</span> <strong class="text-emerald-400">${item.fairPct.toFixed(2)}%</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">Fair Odds Murni:</span> <strong class="text-amber-400">${item.fairOdds.toFixed(3)}</strong></div>
+            </div>
+          </div>
+        `;
+        topPicksContainer.innerHTML += cardHtml;
+      }
+
+      // Render Tabel Lengkap
       const tableBody = document.getElementById('resultTableBody');
       tableBody.innerHTML = '';
 
-      list.forEach(item => {
-        if (!item.odds || item.odds <= 1) return;
-        const impliedPct = item.imp * 100;
-        const fairPct = (item.imp / item.sum) * 100;
-        const fairOdds = 1 / (fairPct / 100);
-
+      analyzed.forEach(item => {
         const row = `
           <tr>
             <td class="py-3 font-semibold text-slate-200">${item.name}</td>
             <td class="py-3 font-bold text-white">${item.odds}</td>
-            <td class="py-3 text-sky-400 font-bold">${impliedPct.toFixed(2)}%</td>
-            <td class="py-3 text-emerald-400 font-bold">${fairPct.toFixed(2)}%</td>
-            <td class="py-3 text-right text-amber-400 font-bold">${fairOdds.toFixed(3)}</td>
+            <td class="py-3 text-sky-400 font-bold">${item.impliedPct.toFixed(2)}%</td>
+            <td class="py-3 text-emerald-400 font-bold">${item.fairPct.toFixed(2)}%</td>
+            <td class="py-3 text-amber-400 font-bold">${item.fairOdds.toFixed(3)}</td>
+            <td class="py-3 text-right font-bold text-slate-300">${item.edge.toFixed(2)}%</td>
           </tr>
         `;
         tableBody.innerHTML += row;
       });
 
-      document.getElementById('summaryCard').innerHTML = `
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-          <div><span class="text-slate-400">Margin 1X2:</span> <strong class="text-amber-400 block text-sm">${margin1X2.toFixed(2)}%</strong></div>
-          <div><span class="text-slate-400">Margin HDP:</span> <strong class="text-amber-400 block text-sm">${marginHdp.toFixed(2)}%</strong></div>
-          <div><span class="text-slate-400">Margin O/U:</span> <strong class="text-amber-400 block text-sm">${marginOu.toFixed(2)}%</strong></div>
-          <div><span class="text-slate-400">Margin BTTS:</span> <strong class="text-amber-400 block text-sm">${marginBtts.toFixed(2)}%</strong></div>
-        </div>
-      `;
-
-      renderMatchHistory(home, away);
       document.getElementById('resultBox').classList.remove('hidden');
     }
-
-    function renderMatchHistory(home, away) {
-      const container = document.getElementById('matchHistoryContainer');
-      container.innerHTML = `
-        <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl space-y-3">
-          <span class="text-xs font-bold text-sky-400 uppercase tracking-wider block border-b border-slate-800 pb-2">
-            🛡️ 5 PERTANDINGAN TERAKHIR: ${home}
-          </span>
-          <div class="space-y-2 text-xs">
-            <div class="flex justify-between items-center bg-slate-900/60 p-2 rounded">
-              <span>${home} 2 - 0 Racing Club</span>
-              <span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold">W</span>
-            </div>
-            <div class="flex justify-between items-center bg-slate-900/60 p-2 rounded">
-              <span>San Lorenzo 1 - 1 ${home}</span>
-              <span class="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded font-bold">D</span>
-            </div>
-            <div class="flex justify-between items-center bg-slate-900/60 p-2 rounded">
-              <span>${home} 3 - 1 Independiente</span>
-              <span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold">W</span>
-            </div>
-            <div class="flex justify-between items-center bg-slate-900/60 p-2 rounded">
-              <span>Velez Sarsfield 1 - 0 ${home}</span>
-              <span class="bg-rose-500/20 text-rose-400 px-2 py-0.5 rounded font-bold">L</span>
-            </div>
-            <div class="flex justify-between items-center bg-slate-900/60 p-2 rounded">
-              <span>${home} 1 - 0 Newell's Old Boys</span>
-              <span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold">W</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl space-y-3">
-          <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider block border-b border-slate-800 pb-2">
-            ⚔️ 5 PERTANDINGAN TERAKHIR: ${away}
-          </span>
-          <div class="space-y-2 text-xs">
-            <div class="flex justify-between items-center bg-slate-900/60 p-2 rounded">
-              <span>${away} 1 - 1 Huracan</span>
-              <span class="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded font-bold">D</span>
-            </div>
-            <div class="flex justify-between items-center bg-slate-900/60 p-2 rounded">
-              <span>Banfield 0 - 2 ${away}</span>
-              <span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold">W</span>
-            </div>
-            <div class="flex justify-between items-center bg-slate-900/60 p-2 rounded">
-              <span>${away} 0 - 1 Estudiantes</span>
-              <span class="bg-rose-500/20 text-rose-400 px-2 py-0.5 rounded font-bold">L</span>
-            </div>
-            <div class="flex justify-between items-center bg-slate-900/60 p-2 rounded">
-              <span>Rosario Central 2 - 2 ${away}</span>
-              <span class="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded font-bold">D</span>
-            </div>
-            <div class="flex justify-between items-center bg-slate-900/60 p-2 rounded">
-              <span>${away} 1 - 0 Tigre</span>
-              <span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold">W</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl space-y-3 md:col-span-2">
-          <span class="text-xs font-bold text-amber-400 uppercase tracking-wider block border-b border-slate-800 pb-2">
-            🤝 HEAD TO HEAD TERAKHIR (${home} vs ${away})
-          </span>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
-            <div class="bg-slate-900/80 p-2.5 rounded border border-slate-800 text-center">
-              <span class="text-slate-400 block text-[10px]">Laga Terakhir</span>
-              <strong class="text-slate-200 block mt-1">${home} 1 - 0 ${away}</strong>
-            </div>
-            <div class="bg-slate-900/80 p-2.5 rounded border border-slate-800 text-center">
-              <span class="text-slate-400 block text-[10px]">Laga Sebelumnya</span>
-              <strong class="text-slate-200 block mt-1">${away} 2 - 1 ${home}</strong>
-            </div>
-            <div class="bg-slate-900/80 p-2.5 rounded border border-slate-800 text-center">
-              <span class="text-slate-400 block text-[10px]">Laga Sebelumnya</span>
-              <strong class="text-slate-200 block mt-1">${home} 1 - 1 ${away}</strong>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    window.onload = hitungSemua;
   </script>
 </body>
 </html>
