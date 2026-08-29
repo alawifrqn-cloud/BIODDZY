@@ -3,20 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Try It Or Cry Later</title>
+  <title>NO EGO JUST RESULTS</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-8 font-sans">
 
   <div class="max-w-4xl mx-auto space-y-6">
     
-    <!-- HEADER -->
-    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-2xl flex justify-between items-center">
-      <div>
-        <h1 class="text-2xl font-black text-emerald-400 tracking-wide uppercase">⚡ TRY IT OR CRY LATER</h1>
-        <p class="text-xs text-slate-400 mt-1">Direct Auto Matcher via API-Sports Database.</p>
-      </div>
-      <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs px-3 py-1.5 rounded-full font-bold">API-SPORTS DIRECT ACTIVE</span>
+    <!-- HEADER (BERSIH & FULL TULISAN GEDE) -->
+    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-2xl text-center">
+      <h1 class="text-3xl md:text-4xl font-black text-emerald-400 tracking-wider uppercase">NO EGO JUST RESULTS</h1>
     </div>
 
     <!-- MAIN FORM CONTAINER -->
@@ -26,11 +22,11 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <label class="block text-xs font-bold text-slate-400 uppercase mb-1">HOME TEAM</label>
-          <input type="text" id="homeName" placeholder="KYOTO SANGA" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm font-bold text-slate-100 focus:border-emerald-500 focus:outline-none uppercase">
+          <input type="text" id="homeName" placeholder="NAMA TIM" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm font-bold text-slate-100 focus:border-emerald-500 focus:outline-none uppercase">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-400 uppercase mb-1">AWAY TEAM</label>
-          <input type="text" id="awayName" placeholder="AVISPA FUKUOKA" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm font-bold text-slate-100 focus:border-emerald-500 focus:outline-none uppercase">
+          <input type="text" id="awayName" placeholder="NAMA TIM" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm font-bold text-slate-100 focus:border-emerald-500 focus:outline-none uppercase">
         </div>
         <div>
           <label class="block text-xs font-bold text-amber-400 uppercase mb-1">SAMPEL MATCH H2H</label>
@@ -46,15 +42,15 @@
         <div class="grid grid-cols-3 gap-3">
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">HOME (M1)</label>
-            <input type="number" step="0.001" id="oddsM1" placeholder="2.589" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-sky-400">
+            <input type="number" step="0.001" id="oddsM1" placeholder="ODDS" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-sky-400">
           </div>
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">DRAW (X)</label>
-            <input type="number" step="0.001" id="oddsX" placeholder="3.27" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-amber-400">
+            <input type="number" step="0.001" id="oddsX" placeholder="ODDS" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-amber-400">
           </div>
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">AWAY (M2)</label>
-            <input type="number" step="0.001" id="oddsM2" placeholder="2.814" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400">
+            <input type="number" step="0.001" id="oddsM2" placeholder="ODDS" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400">
           </div>
         </div>
       </div>
@@ -64,18 +60,18 @@
         <div class="bg-slate-950/80 p-5 rounded-xl border border-slate-800 space-y-3">
           <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider block">Asian Handicap</span>
           <div class="grid grid-cols-3 gap-2">
-            <input type="text" id="hdpLine" placeholder="0" class="bg-slate-900 border border-emerald-500/50 rounded p-2 text-xs font-bold text-emerald-300">
-            <input type="number" step="0.001" id="oddsHdpHome" placeholder="1.818" class="bg-slate-900 border border-slate-800 rounded p-2 text-xs font-bold text-emerald-400">
-            <input type="number" step="0.001" id="oddsHdpAway" placeholder="2.012" class="bg-slate-900 border border-slate-800 rounded p-2 text-xs font-bold text-emerald-400">
+            <input type="text" id="hdpLine" placeholder="LINE" class="bg-slate-900 border border-emerald-500/50 rounded p-2 text-xs font-bold text-emerald-300">
+            <input type="number" step="0.001" id="oddsHdpHome" placeholder="ODDS" class="bg-slate-900 border border-slate-800 rounded p-2 text-xs font-bold text-emerald-400">
+            <input type="number" step="0.001" id="oddsHdpAway" placeholder="ODDS" class="bg-slate-900 border border-slate-800 rounded p-2 text-xs font-bold text-emerald-400">
           </div>
         </div>
 
         <div class="bg-slate-950/80 p-5 rounded-xl border border-slate-800 space-y-3">
           <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider block">Over / Under</span>
           <div class="grid grid-cols-3 gap-2">
-            <input type="text" id="ouLine" placeholder="2.5" class="bg-slate-900 border border-emerald-500/50 rounded p-2 text-xs font-bold text-emerald-300">
-            <input type="number" step="0.001" id="oddsOuOver" placeholder="1.915" class="bg-slate-900 border border-slate-800 rounded p-2 text-xs font-bold text-emerald-400">
-            <input type="number" step="0.001" id="oddsOuUnder" placeholder="1.905" class="bg-slate-900 border border-slate-800 rounded p-2 text-xs font-bold text-emerald-400">
+            <input type="text" id="ouLine" placeholder="LINE" class="bg-slate-900 border border-emerald-500/50 rounded p-2 text-xs font-bold text-emerald-300">
+            <input type="number" step="0.001" id="oddsOuOver" placeholder="ODDS" class="bg-slate-900 border border-slate-800 rounded p-2 text-xs font-bold text-emerald-400">
+            <input type="number" step="0.001" id="oddsOuUnder" placeholder="ODDS" class="bg-slate-900 border border-slate-800 rounded p-2 text-xs font-bold text-emerald-400">
           </div>
         </div>
       </div>
@@ -133,9 +129,9 @@
 
   <script>
     // ============================================================
-    // 🔑 BARIS 157: PASTE API-KEY DARI DASHBOARD API-SPORTS KAMU DISINI
+    // 🔑 BARIS 140: PASTE API-KEY DARI DASHBOARD API-SPORTS KAMU DISINI
     // ============================================================
-    const APISPORTS_KEY = "e702ac438b6cb005f63f5fdfd6197b8f";
+    const APISPORTS_KEY = "PASTE_API_KEY_KAMU_DISINI";
     // ============================================================
 
     async function fetchDataAndAnalyze() {
@@ -180,7 +176,7 @@
     }
 
     async function getTeamId(teamName) {
-      if (APISPORTS_KEY === "PASTE_API_KEY_KAMU_DISINI") return null;
+      if (APISPORTS_KEY === "e702ac438b6cb005f63f5fdfd6197b8f") return null;
       const res = await fetch(`https://v3.football.api-sports.io/teams?search=${encodeURIComponent(teamName)}`, {
         headers: {
           'x-apisports-key': APISPORTS_KEY
@@ -247,12 +243,10 @@
       const oHdpHome = parseFloat(document.getElementById('oddsHdpHome').value) || 1.818;
       const lineOu = document.getElementById('ouLine').value || "2.5";
 
-      // Dinamis berbasis odds & count sampel
       const impM1 = (1 / oM1);
       const impM2 = (1 / oM2);
       const impUnder = (1 / oOuUnder);
 
-      // Simulasi pembulatan hit menyesuaikan total count sampel
       const simulatedHomeHits = Math.round(impM1 * count);
       const simulatedAwayHits = Math.round(impM2 * count);
       const simulatedUnderHits = Math.round(impUnder * count);
