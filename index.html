@@ -10,7 +10,7 @@
 
   <div class="max-w-4xl mx-auto space-y-6">
     
-    <!-- HEADER (BERSIH & FULL TULISAN GEDE) -->
+    <!-- HEADER -->
     <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-2xl text-center">
       <h1 class="text-3xl md:text-4xl font-black text-emerald-400 tracking-wider uppercase">NO EGO JUST RESULTS</h1>
     </div>
@@ -76,8 +76,8 @@
         </div>
       </div>
 
-      <button onclick="fetchDataAndAnalyze()" id="btnSubmit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-4 rounded-xl shadow-lg transition duration-200 uppercase tracking-wider text-base">
-        🚀 TARIK DATA API-SPORTS & HASILKAN TOP PICK
+      <button onclick="fetchDataAndAnalyze()" id="btnSubmit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-4 rounded-xl shadow-lg transition duration-200 uppercase tracking-wider text-lg">
+        🚀 ANALYZER
       </button>
 
     </div>
@@ -131,7 +131,7 @@
     // ============================================================
     // 🔑 BARIS 140: PASTE API-KEY DARI DASHBOARD API-SPORTS KAMU DISINI
     // ============================================================
-    const APISPORTS_KEY = "PASTE_API_KEY_KAMU_DISINI";
+    const APISPORTS_KEY = "e702ac438b6cb005f63f5fdfd6197b8f";
     // ============================================================
 
     async function fetchDataAndAnalyze() {
@@ -148,7 +148,7 @@
       const home = homeInput.toUpperCase();
       const away = awayInput.toUpperCase();
 
-      btn.innerText = "⏳ MENARIK DATA REAL API-SPORTS...";
+      btn.innerText = "⏳ MEMPROSES ANALISIS...";
       btn.disabled = true;
 
       try {
@@ -169,14 +169,14 @@
         console.error(err);
         runFallbackAnalysis(home, away, sampleCount);
       } finally {
-        btn.innerText = "🚀 TARIK DATA API-SPORTS & HASILKAN TOP PICK";
+        btn.innerText = "🚀 ANALYZER";
         btn.disabled = false;
         document.getElementById('resultBox').classList.remove('hidden');
       }
     }
 
     async function getTeamId(teamName) {
-      if (APISPORTS_KEY === "e702ac438b6cb005f63f5fdfd6197b8f") return null;
+      if (APISPORTS_KEY === "PASTE_API_KEY_KAMU_DISINI") return null;
       const res = await fetch(`https://v3.football.api-sports.io/teams?search=${encodeURIComponent(teamName)}`, {
         headers: {
           'x-apisports-key': APISPORTS_KEY
