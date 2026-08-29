@@ -22,15 +22,19 @@
     <!-- MAIN FORM CONTAINER -->
     <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-6">
       
-      <!-- TIM DATA -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- TIM DATA & SAMPLE MATCH SETTING -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <label class="block text-xs font-bold text-slate-400 uppercase mb-1">HOME TEAM</label>
-          <input type="text" id="homeName" placeholder="Bologna" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm font-bold text-slate-100 focus:border-emerald-500 focus:outline-none uppercase">
+          <input type="text" id="homeName" placeholder="LIVERPOOL" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm font-bold text-slate-100 focus:border-emerald-500 focus:outline-none uppercase">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-400 uppercase mb-1">AWAY TEAM</label>
-          <input type="text" id="awayName" placeholder="Lazio" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm font-bold text-slate-100 focus:border-emerald-500 focus:outline-none uppercase">
+          <input type="text" id="awayName" placeholder="NOTTINGHAM FOREST" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm font-bold text-slate-100 focus:border-emerald-500 focus:outline-none uppercase">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-amber-400 uppercase mb-1">SAMPEL MATCH H2H</label>
+          <input type="number" id="sampleMatchCount" value="10" min="1" max="100" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm font-bold text-amber-400 focus:border-emerald-500 focus:outline-none">
         </div>
       </div>
 
@@ -42,15 +46,15 @@
         <div class="grid grid-cols-3 gap-3">
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">HOME (M1)</label>
-            <input type="number" step="0.01" id="oddsM1" placeholder="2.20" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-sky-400">
+            <input type="number" step="0.01" id="oddsM1" placeholder="1.50" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-sky-400">
           </div>
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">DRAW (X)</label>
-            <input type="number" step="0.01" id="oddsX" placeholder="3.36" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-amber-400">
+            <input type="number" step="0.01" id="oddsX" placeholder="4.50" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-amber-400">
           </div>
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">AWAY (M2)</label>
-            <input type="number" step="0.01" id="oddsM2" placeholder="3.70" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400">
+            <input type="number" step="0.01" id="oddsM2" placeholder="6.66" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400">
           </div>
         </div>
       </div>
@@ -60,18 +64,18 @@
         <div class="bg-slate-950/80 p-5 rounded-xl border border-slate-800 space-y-3">
           <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider block">Asian Handicap</span>
           <div class="grid grid-cols-3 gap-2">
-            <input type="text" id="hdpLine" placeholder="-0.25" class="bg-slate-900 border border-emerald-500/50 rounded p-2 text-xs font-bold text-emerald-300">
-            <input type="number" step="0.01" id="oddsHdpHome" placeholder="Home 1.88" class="bg-slate-900 border border-slate-800 rounded p-2 text-xs font-bold text-emerald-400">
-            <input type="number" step="0.01" id="oddsHdpAway" placeholder="Away 2.01" class="bg-slate-900 border border-slate-800 rounded p-2 text-xs font-bold text-emerald-400">
+            <input type="text" id="hdpLine" placeholder="-1.25" class="bg-slate-900 border border-emerald-500/50 rounded p-2 text-xs font-bold text-emerald-300">
+            <input type="number" step="0.01" id="oddsHdpHome" placeholder="Home 2.03" class="bg-slate-900 border border-slate-800 rounded p-2 text-xs font-bold text-emerald-400">
+            <input type="number" step="0.01" id="oddsHdpAway" placeholder="Away 1.88" class="bg-slate-900 border border-slate-800 rounded p-2 text-xs font-bold text-emerald-400">
           </div>
         </div>
 
         <div class="bg-slate-950/80 p-5 rounded-xl border border-slate-800 space-y-3">
           <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider block">Over / Under</span>
           <div class="grid grid-cols-3 gap-2">
-            <input type="text" id="ouLine" placeholder="2.25" class="bg-slate-900 border border-emerald-500/50 rounded p-2 text-xs font-bold text-emerald-300">
-            <input type="number" step="0.01" id="oddsOuOver" placeholder="Over 1.98" class="bg-slate-900 border border-slate-800 rounded p-2 text-xs font-bold text-emerald-400">
-            <input type="number" step="0.01" id="oddsOuUnder" placeholder="Under 1.94" class="bg-slate-900 border border-slate-800 rounded p-2 text-xs font-bold text-emerald-400">
+            <input type="text" id="ouLine" placeholder="3" class="bg-slate-900 border border-emerald-500/50 rounded p-2 text-xs font-bold text-emerald-300">
+            <input type="number" step="0.01" id="oddsOuOver" placeholder="Over 1.80" class="bg-slate-900 border border-slate-800 rounded p-2 text-xs font-bold text-emerald-400">
+            <input type="number" step="0.01" id="oddsOuUnder" placeholder="Under 1.99" class="bg-slate-900 border border-slate-800 rounded p-2 text-xs font-bold text-emerald-400">
           </div>
         </div>
       </div>
@@ -112,7 +116,7 @@
           </div>
           <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
             <span class="text-slate-400 block text-[10px]">KARAKTER MATCH</span>
-            <strong class="text-rose-400 text-sm font-extrabold block mt-1" id="matchKarakter">-</strong>
+            <strong class="text-rose-400 text-sm font-extrabold block mt-1 uppercase" id="matchKarakter">-</strong>
           </div>
         </div>
       </div>
@@ -129,20 +133,24 @@
 
   <script>
     // ============================================================
-    // 🔑 BARIS 147: PASTE API-KEY DARI DASHBOARD API-SPORTS KAMU DISINI
+    // 🔑 BARIS 157: PASTE API-KEY DARI DASHBOARD API-SPORTS KAMU DISINI
     // ============================================================
     const APISPORTS_KEY = "PASTE_API_KEY_KAMU_DISINI";
     // ============================================================
 
     async function fetchDataAndAnalyze() {
-      const home = document.getElementById('homeName').value.trim();
-      const away = document.getElementById('awayName').value.trim();
+      const homeInput = document.getElementById('homeName').value.trim();
+      const awayInput = document.getElementById('awayName').value.trim();
+      const sampleCount = parseInt(document.getElementById('sampleMatchCount').value) || 10;
       const btn = document.getElementById('btnSubmit');
 
-      if (!home || !away) {
+      if (!homeInput || !awayInput) {
         alert("Harap masukkan nama tim Home dan Away!");
         return;
       }
+
+      const home = homeInput.toUpperCase();
+      const away = awayInput.toUpperCase();
 
       btn.innerText = "⏳ MENARIK DATA REAL API-SPORTS...";
       btn.disabled = true;
@@ -153,14 +161,14 @@
 
         if (!homeId || !awayId) {
           alert("Tim tidak ditemukan di database API-Sports. Menggunakan analisis kalkulasi fallback.");
-          runFallbackAnalysis(home, away);
+          runFallbackAnalysis(home, away, sampleCount);
         } else {
-          const matches = await getH2HData(homeId, awayId);
-          processRealAnalysis(home, away, matches);
+          const matches = await getH2HData(homeId, awayId, sampleCount);
+          processRealAnalysis(home, away, matches, sampleCount);
         }
       } catch (err) {
         console.error(err);
-        runFallbackAnalysis(home, away);
+        runFallbackAnalysis(home, away, sampleCount);
       } finally {
         btn.innerText = "🚀 TARIK DATA API-SPORTS & HASILKAN TOP PICK";
         btn.disabled = false;
@@ -179,8 +187,8 @@
       return data.response && data.response.length > 0 ? data.response[0].team.id : null;
     }
 
-    async function getH2HData(hId, aId) {
-      const res = await fetch(`https://v3.football.api-sports.io/fixtures/headtohead?h2h=${hId}-${aId}&last=10`, {
+    async function getH2HData(hId, aId, count) {
+      const res = await fetch(`https://v3.football.api-sports.io/fixtures/headtohead?h2h=${hId}-${aId}&last=${count}`, {
         headers: {
           'x-apisports-key': APISPORTS_KEY
         }
@@ -189,8 +197,8 @@
       return data.response || [];
     }
 
-    function processRealAnalysis(home, away, matches) {
-      const total = matches.length || 10;
+    function processRealAnalysis(home, away, matches, count) {
+      const total = matches.length || count;
       let homeWins = 0, awayWins = 0, bttsCount = 0, over25Count = 0;
 
       matches.forEach(m => {
@@ -202,15 +210,15 @@
         if ((gh + ga) > 2.5) over25Count++;
       });
 
-      const oM1 = parseFloat(document.getElementById('oddsM1').value) || 2.20;
-      const oM2 = parseFloat(document.getElementById('oddsM2').value) || 3.70;
-      const oOuUnder = parseFloat(document.getElementById('oddsOuUnder').value) || 1.94;
-      const lineHdp = document.getElementById('hdpLine').value || "-0.25";
-      const oHdpHome = parseFloat(document.getElementById('oddsHdpHome').value) || 1.88;
-      const lineOu = document.getElementById('ouLine').value || "2.25";
+      const oM1 = parseFloat(document.getElementById('oddsM1').value) || 1.50;
+      const oM2 = parseFloat(document.getElementById('oddsM2').value) || 6.66;
+      const oOuUnder = parseFloat(document.getElementById('oddsOuUnder').value) || 1.99;
+      const lineHdp = document.getElementById('hdpLine').value || "-1.25";
+      const oHdpHome = parseFloat(document.getElementById('oddsHdpHome').value) || 2.03;
+      const lineOu = document.getElementById('ouLine').value || "3";
 
-      const hitM1Pct = (homeWins / total) * 100 || 46;
-      const hitM2Pct = (awayWins / total) * 100 || 27;
+      const hitM1Pct = (homeWins / total) * 100 || 66.4;
+      const hitM2Pct = (awayWins / total) * 100 || 15.0;
       const bttsPct = (bttsCount / total) * 100 || 56;
       const over25Pct = (over25Count / total) * 100 || 48;
       const underPct = 100 - over25Pct;
@@ -219,21 +227,22 @@
       const roiM2 = ((hitM2Pct / 100) * oM2 - 1) * 100;
       const roiUnder = ((underPct / 100) * oOuUnder - 1) * 100;
 
+      document.getElementById('matchInfoBadge').innerText = `${total} MATCH SAMPLE`;
       document.getElementById('totalH2H').innerText = total;
       document.getElementById('bttsRate').innerText = `${bttsPct.toFixed(1)}%`;
       document.getElementById('over25Rate').innerText = `${over25Pct.toFixed(1)}%`;
-      document.getElementById('matchKarakter').innerText = over25Pct < 50 ? "Ketat (Under)" : "Terbuka (Over)";
+      document.getElementById('matchKarakter').innerText = over25Pct < 50 ? "KETAT (UNDER)" : "TERBUKA (OVER)";
 
       renderDashboard(home, away, hitM1Pct, roiM1, oM1, hitM2Pct, roiM2, oM2, underPct, roiUnder, oOuUnder, lineHdp, oHdpHome, lineOu);
     }
 
-    function runFallbackAnalysis(home, away) {
-      const oM1 = parseFloat(document.getElementById('oddsM1').value) || 2.20;
-      const oM2 = parseFloat(document.getElementById('oddsM2').value) || 3.70;
-      const oOuUnder = parseFloat(document.getElementById('oddsOuUnder').value) || 1.94;
-      const lineHdp = document.getElementById('hdpLine').value || "-0.25";
-      const oHdpHome = parseFloat(document.getElementById('oddsHdpHome').value) || 1.88;
-      const lineOu = document.getElementById('ouLine').value || "2.25";
+    function runFallbackAnalysis(home, away, count) {
+      const oM1 = parseFloat(document.getElementById('oddsM1').value) || 1.50;
+      const oM2 = parseFloat(document.getElementById('oddsM2').value) || 6.66;
+      const oOuUnder = parseFloat(document.getElementById('oddsOuUnder').value) || 1.99;
+      const lineHdp = document.getElementById('hdpLine').value || "-1.25";
+      const oHdpHome = parseFloat(document.getElementById('oddsHdpHome').value) || 2.03;
+      const lineOu = document.getElementById('ouLine').value || "3";
 
       const hitM1Pct = (1 / oM1) * 100;
       const hitM2Pct = (1 / oM2) * 100;
@@ -243,30 +252,35 @@
       const roiM2 = 0.7;
       const roiUnder = 0.4;
 
-      document.getElementById('totalH2H').innerText = "10 (Simulasi)";
+      document.getElementById('matchInfoBadge').innerText = `${count} MATCH SAMPLE`;
+      document.getElementById('totalH2H').innerText = `${count} (SIMULASI)`;
       document.getElementById('bttsRate').innerText = "56.0%";
       document.getElementById('over25Rate').innerText = "48.2%";
-      document.getElementById('matchKarakter').innerText = "Ketat (Under)";
+      document.getElementById('matchKarakter').innerText = "KETAT (UNDER)";
 
       renderDashboard(home, away, hitM1Pct, roiM1, oM1, hitM2Pct, roiM2, oM2, underPct, roiUnder, oOuUnder, lineHdp, oHdpHome, lineOu);
     }
 
     function renderDashboard(home, away, hitM1, roiM1, oM1, hitM2, roiM2, oM2, hitUnder, roiUnder, oOuUnder, lineHdp, oHdpHome, lineOu) {
+      const homeCaps = home.toUpperCase();
+      const awayCaps = away.toUpperCase();
+      const lineOuCaps = lineOu.toUpperCase();
+
       document.getElementById('roiCardsContainer').innerHTML = `
         <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-          <div class="flex justify-between items-center"><span class="text-xs font-bold text-slate-200">${home} 1X2</span><span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded">MEDIUM</span></div>
+          <div class="flex justify-between items-center"><span class="text-xs font-black text-slate-100 uppercase">${homeCaps} 1X2</span><span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded">MEDIUM</span></div>
           <span class="text-xs text-slate-500 block">${hitM1.toFixed(1)}% hit rate</span>
           <div class="flex justify-between items-baseline pt-1"><span class="text-xl font-black ${roiM1 >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${roiM1 >= 0 ? '+' : ''}${roiM1.toFixed(1)}%</span><span class="text-xs font-bold text-slate-400">@ ${oM1.toFixed(2)}</span></div>
         </div>
 
         <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-          <div class="flex justify-between items-center"><span class="text-xs font-bold text-slate-200">${away} 1X2</span><span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded">MEDIUM</span></div>
+          <div class="flex justify-between items-center"><span class="text-xs font-black text-slate-100 uppercase">${awayCaps} 1X2</span><span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded">MEDIUM</span></div>
           <span class="text-xs text-slate-500 block">${hitM2.toFixed(1)}% hit rate</span>
           <div class="flex justify-between items-baseline pt-1"><span class="text-xl font-black ${roiM2 >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${roiM2 >= 0 ? '+' : ''}${roiM2.toFixed(1)}%</span><span class="text-xs font-bold text-slate-400">@ ${oM2.toFixed(2)}</span></div>
         </div>
 
         <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-          <div class="flex justify-between items-center"><span class="text-xs font-bold text-slate-200">Under ${lineOu}</span><span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded">MEDIUM</span></div>
+          <div class="flex justify-between items-center"><span class="text-xs font-black text-slate-100 uppercase">UNDER ${lineOuCaps}</span><span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded">MEDIUM</span></div>
           <span class="text-xs text-slate-500 block">${hitUnder.toFixed(1)}% hit rate</span>
           <div class="flex justify-between items-baseline pt-1"><span class="text-xl font-black ${roiUnder >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${roiUnder >= 0 ? '+' : ''}${roiUnder.toFixed(1)}%</span><span class="text-xs font-bold text-slate-400">@ ${oOuUnder.toFixed(2)}</span></div>
         </div>
@@ -276,7 +290,7 @@
         <div class="bg-slate-950 border border-emerald-500/40 p-4 rounded-xl flex justify-between items-center">
           <div>
             <span class="bg-emerald-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded uppercase">🔥 PRIMARY PICK</span>
-            <h3 class="text-base font-extrabold text-white mt-1">Asian Handicap: ${home} (${lineHdp})</h3>
+            <h3 class="text-base font-extrabold text-white mt-1 uppercase">ASIAN HANDICAP: ${homeCaps} (${lineHdp})</h3>
             <p class="text-xs text-slate-400 mt-0.5">ROI Positif +${roiM1.toFixed(1)}%. Menahan line ${lineHdp} aman dari risiko seri.</p>
           </div>
           <span class="text-lg font-black text-emerald-400">@ ${oHdpHome.toFixed(2)}</span>
@@ -285,7 +299,7 @@
         <div class="bg-slate-950 border border-sky-500/40 p-4 rounded-xl flex justify-between items-center">
           <div>
             <span class="bg-sky-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded uppercase">💎 VALUE PICK</span>
-            <h3 class="text-base font-extrabold text-white mt-1">Over / Under: Under ${lineOu}</h3>
+            <h3 class="text-base font-extrabold text-white mt-1 uppercase">OVER / UNDER: UNDER ${lineOuCaps}</h3>
             <p class="text-xs text-slate-400 mt-0.5">Rasio pertandingan imbang/ketat tinggi dengan hit rate ${hitUnder.toFixed(1)}%.</p>
           </div>
           <span class="text-lg font-black text-sky-400">@ ${oOuUnder.toFixed(2)}</span>
