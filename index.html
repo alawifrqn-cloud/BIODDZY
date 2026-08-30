@@ -29,8 +29,27 @@
           <input type="text" id="awayName" placeholder="NAMA TIM" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm font-bold text-slate-100 focus:border-emerald-500 focus:outline-none uppercase">
         </div>
         <div>
-          <label class="block text-xs font-bold text-amber-400 uppercase mb-1">SAMPEL MATCH H2H</label>
-          <input type="number" id="sampleMatchCount" value="15" min="1" max="100" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm font-bold text-amber-400 focus:border-emerald-500 focus:outline-none">
+          <div class="flex justify-between items-center mb-1">
+            <label class="block text-xs font-bold text-amber-400 uppercase">SAMPEL MATCH H2H</label>
+            <label class="text-[10px] text-emerald-400 font-bold cursor-pointer"><input type="checkbox" id="autoSampleToggle" checked onchange="toggleAutoSample()"> AUTO</label>
+          </div>
+          <input type="number" id="sampleMatchCount" value="15" min="1" max="100" readonly class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm font-bold text-amber-400 focus:border-emerald-500 focus:outline-none cursor-not-allowed">
+        </div>
+      </div>
+
+      <!-- TOLERANSI KEMIRIPAN ODDS SLIDER & AUTO TOGGLE -->
+      <div class="bg-slate-950/80 p-4 rounded-xl border border-slate-800 space-y-2">
+        <div class="flex justify-between items-center text-xs">
+          <span class="font-bold text-slate-400 uppercase">TOLERANSI KEMIRIPAN ODDS</span>
+          <div class="flex items-center gap-3">
+            <label class="text-[10px] text-emerald-400 font-bold cursor-pointer"><input type="checkbox" id="autoTolToggle" checked onchange="calculateAutoTolerance()"> AUTO</label>
+            <strong id="toleranceVal" class="text-emerald-400 font-extrabold">± 0.35 (AUTO)</strong>
+          </div>
+        </div>
+        <input type="range" id="toleranceSlider" min="0.10" max="1.00" step="0.05" value="0.35" disabled oninput="document.getElementById('toleranceVal').innerText = '± ' + parseFloat(this.value).toFixed(2) + ' (MANUAL)'" class="w-full accent-emerald-500 bg-slate-900 cursor-not-allowed">
+        <div class="flex justify-between text-[10px] text-slate-500">
+          <span>0.10 (Ketat)</span>
+          <span>1.00 (Longgar)</span>
         </div>
       </div>
 
@@ -42,20 +61,20 @@
         <div class="grid grid-cols-3 gap-3">
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">HOME (M1)</label>
-            <input type="text" id="oddsM1" placeholder="ODDS" oninput="formatAutoOdds(this)" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-sky-400 focus:outline-none focus:border-emerald-500">
+            <input type="text" id="oddsM1" placeholder="ODDS" oninput="formatAutoOdds(this); calculateAutoTolerance();" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-sky-400 focus:outline-none focus:border-emerald-500">
           </div>
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">DRAW (X)</label>
-            <input type="text" id="oddsX" placeholder="ODDS" oninput="formatAutoOdds(this)" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-amber-400 focus:outline-none focus:border-emerald-500">
+            <input type="text" id="oddsX" placeholder="ODDS" oninput="formatAutoOdds(this); calculateAutoTolerance();" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-amber-400 focus:outline-none focus:border-emerald-500">
           </div>
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">AWAY (M2)</label>
-            <input type="text" id="oddsM2" placeholder="ODDS" oninput="formatAutoOdds(this)" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400 focus:outline-none focus:border-emerald-500">
+            <input type="text" id="oddsM2" placeholder="ODDS" oninput="formatAutoOdds(this); calculateAutoTolerance();" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-emerald-400 focus:outline-none focus:border-emerald-500">
           </div>
         </div>
       </div>
 
-      <!-- ASIAN HANDICAP (AUTO SYNC LINE & FORMAT ODDS) -->
+      <!-- ASIAN HANDICAP -->
       <div class="bg-slate-950/80 p-5 rounded-xl border border-slate-800 space-y-3">
         <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider block">ASIAN HANDICAP</span>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -78,7 +97,7 @@
         </div>
       </div>
 
-      <!-- OVER / UNDER (AUTO SYNC LINE & FORMAT ODDS) -->
+      <!-- OVER / UNDER -->
       <div class="bg-slate-950/80 p-5 rounded-xl border border-slate-800 space-y-3">
         <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider block">OVER / UNDER</span>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -134,33 +153,33 @@
         <div id="roiCardsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
       </div>
 
-      <!-- MATCH STATS -->
-      <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
-        <h3 class="text-xs font-bold text-slate-400 uppercase mb-3">Statistik H2H & Performa Nyata</h3>
+      <!-- MATCH STATS & HOME/AWAY PROFILES -->
+      <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+        <h3 class="text-xs font-bold text-slate-400 uppercase">Statistik Performa Home/Away & H2H Nyata</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
           <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
             <span class="text-slate-400 block text-[10px]">TOTAL MATCH H2H</span>
             <strong class="text-emerald-400 text-lg font-black block mt-0.5" id="totalH2H">0</strong>
           </div>
-          <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
-            <span class="text-slate-400 block text-[10px]">BTTS HISTORIS NYATA</span>
+          <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
+            <span class="text-slate-400 block text-[10px]">POTENSI BALAS GOL (BTTS)</span>
             <strong class="text-sky-400 text-lg font-black block mt-0.5" id="bttsRate">0%</strong>
           </div>
-          <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+          <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
             <span class="text-slate-400 block text-[10px]">OVER 2.5 HISTORIS NYATA</span>
             <strong class="text-amber-400 text-lg font-black block mt-0.5" id="over25Rate">0%</strong>
           </div>
-          <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
-            <span class="text-slate-400 block text-[10px]">KARAKTER MATCH</span>
+          <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
+            <span class="text-slate-400 block text-[10px]">KARAKTER HOME/AWAY</span>
             <strong class="text-rose-400 text-sm font-extrabold block mt-1 uppercase" id="matchKarakter">-</strong>
           </div>
         </div>
       </div>
 
-      <!-- FINAL TOP PICKS -->
+      <!-- FINAL TOP PICKS (4 OPSIS AUTOMATICALLY RANKED) -->
       <div class="border-t border-slate-800 pt-6 space-y-4">
-        <h2 class="text-lg font-black text-slate-100 uppercase tracking-wide">🏆 REKOMENDASI TOP PICK FINAL</h2>
-        <div id="finalPicksContainer" class="space-y-3"></div>
+        <h2 class="text-lg font-black text-slate-100 uppercase tracking-wide">🏆 REKOMENDASI 4 TOP PICKS FINAL</h2>
+        <div id="finalPicksContainer" class="space-y-4"></div>
       </div>
 
     </div>
@@ -169,14 +188,54 @@
 
   <script>
     // ============================================================
-    // 🔑 BARIS 190: PASTE API-KEY DARI DASHBOARD API-SPORTS KAMU DISINI
+    // 🔑 BARIS 248: PASTE API-KEY DARI DASHBOARD API-SPORTS KAMU DISINI
     // ============================================================
     const APISPORTS_KEY = "PASTE_API_KEY_KAMU_DISINI";
     // ============================================================
 
-    // FUNGSI AUTO FORMAT DESIMAL ODDS (Misal: Ngetik 185 -> Otomatis 1.85)
+    function toggleAutoSample() {
+      const isAuto = document.getElementById('autoSampleToggle').checked;
+      const sampleInput = document.getElementById('sampleMatchCount');
+      sampleInput.readOnly = isAuto;
+      if (isAuto) {
+        sampleInput.classList.add('cursor-not-allowed', 'text-amber-400');
+        sampleInput.value = 15;
+      } else {
+        sampleInput.classList.remove('cursor-not-allowed', 'text-amber-400');
+      }
+    }
+
+    function calculateAutoTolerance() {
+      const isAuto = document.getElementById('autoTolToggle').checked;
+      const slider = document.getElementById('toleranceSlider');
+      const display = document.getElementById('toleranceVal');
+
+      if (!isAuto) {
+        slider.disabled = false;
+        slider.classList.remove('cursor-not-allowed');
+        display.innerText = '± ' + parseFloat(slider.value).toFixed(2) + ' (MANUAL)';
+        return;
+      }
+
+      slider.disabled = true;
+      slider.classList.add('cursor-not-allowed');
+
+      const oM1 = parseFloat(document.getElementById('oddsM1').value) || 2.50;
+      const oM2 = parseFloat(document.getElementById('oddsM2').value) || 2.80;
+      const oX  = parseFloat(document.getElementById('oddsX').value)  || 3.20;
+
+      const diff = Math.abs(oM1 - oM2);
+      let autoTol = (diff / oX) * 0.8;
+
+      if (autoTol < 0.15) autoTol = 0.15;
+      if (autoTol > 0.60) autoTol = 0.60;
+
+      slider.value = autoTol.toFixed(2);
+      display.innerText = '± ' + autoTol.toFixed(2) + ' (AUTO)';
+    }
+
     function formatAutoOdds(input) {
-      let val = input.value.replace(/[^0-9]/g, ''); // Ambil angka saja
+      let val = input.value.replace(/[^0-9]/g, '');
       if (val.length === 0) {
         input.value = '';
         return;
@@ -184,12 +243,10 @@
       if (val.length === 1) {
         input.value = val;
       } else {
-        // Angka pertama diselingi titik desimal
         input.value = val.charAt(0) + '.' + val.substring(1);
       }
     }
 
-    // FUNGSI AUTO SYNC HANDICAP LINE
     function syncHdpLine() {
       const homeVal = document.getElementById('hdpHomeLine').value.trim();
       const awayInput = document.getElementById('hdpAwayLine');
@@ -205,7 +262,6 @@
       }
     }
 
-    // FUNGSI AUTO SYNC OVER/UNDER LINE
     function syncOuLine() {
       document.getElementById('ouUnderLine').value = document.getElementById('ouOverLine').value.trim();
     }
@@ -213,7 +269,8 @@
     async function fetchDataAndAnalyze() {
       const homeInput = document.getElementById('homeName').value.trim();
       const awayInput = document.getElementById('awayName').value.trim();
-      const sampleCount = parseInt(document.getElementById('sampleMatchCount').value) || 15;
+      let sampleCount = parseInt(document.getElementById('sampleMatchCount').value) || 15;
+      const isAutoSample = document.getElementById('autoSampleToggle').checked;
       const btn = document.getElementById('btnSubmit');
 
       if (!homeInput || !awayInput) {
@@ -236,6 +293,10 @@
         } else {
           const matches = await getH2HData(homeId, awayId, sampleCount);
           if (matches && matches.length > 0) {
+            if (isAutoSample) {
+              sampleCount = Math.min(matches.length, 15);
+              document.getElementById('sampleMatchCount').value = sampleCount;
+            }
             processRealAnalysis(home, away, matches, sampleCount);
           } else {
             runFallbackAnalysis(home, away, sampleCount);
@@ -287,68 +348,93 @@
 
       const oM1 = parseFloat(document.getElementById('oddsM1').value) || 2.50;
       const oM2 = parseFloat(document.getElementById('oddsM2').value) || 2.80;
-      const oOuUnder = parseFloat(document.getElementById('oddsOuUnder').value) || 1.90;
+      const oOuOver = parseFloat(document.getElementById('oddsOuOver').value) || 1.85;
+      const oOuUnder = parseFloat(document.getElementById('oddsOuUnder').value) || 1.95;
+      const oBttsYes = parseFloat(document.getElementById('oddsBttsYes').value) || 1.80;
+      const oBttsNo = parseFloat(document.getElementById('oddsBttsNo').value) || 1.95;
+      
       const lineHdp = document.getElementById('hdpHomeLine').value || "0";
       const oHdpHome = parseFloat(document.getElementById('oddsHdpHome').value) || 1.85;
+      const oHdpAway = parseFloat(document.getElementById('oddsHdpAway').value) || 1.95;
       const lineOu = document.getElementById('ouOverLine').value || "2.5";
 
       const hitM1Pct = (homeWins / total) * 100;
       const hitM2Pct = (awayWins / total) * 100;
-      const bttsPct = (bttsCount / total) * 100;
+      
+      const h2hBttsPct = (bttsCount / total) * 100;
+      const impliedBttsPct = oBttsYes > 0 ? (1 / oBttsYes) * 100 : 50;
+      const bttsPct = (h2hBttsPct * 0.6) + (impliedBttsPct * 0.4);
+
       const over25Pct = (over25Count / total) * 100;
       const underPct = 100 - over25Pct;
 
       const roiM1 = ((hitM1Pct / 100) * oM1 - 1) * 100;
       const roiM2 = ((hitM2Pct / 100) * oM2 - 1) * 100;
+      const roiOver = ((over25Pct / 100) * oOuOver - 1) * 100;
       const roiUnder = ((underPct / 100) * oOuUnder - 1) * 100;
 
       document.getElementById('matchInfoBadge').innerText = `${total} MATCH SAMPLE`;
       document.getElementById('totalH2H').innerText = total;
       document.getElementById('bttsRate').innerText = `${bttsPct.toFixed(1)}%`;
       document.getElementById('over25Rate').innerText = `${over25Pct.toFixed(1)}%`;
-      document.getElementById('matchKarakter').innerText = over25Pct < 50 ? "KETAT (UNDER)" : "TERBUKA (OVER)";
+      
+      let karakterTxt = "KETAT (LOW xG)";
+      if (bttsPct >= 55 && over25Pct >= 50) {
+        karakterTxt = "SANGAT TERBUKA (BALAS GOL)";
+      } else if (over25Pct >= 50) {
+        karakterTxt = "DOMINAN (OVER)";
+      }
+      document.getElementById('matchKarakter').innerText = karakterTxt;
 
-      renderDashboard(home, away, hitM1Pct, roiM1, oM1, hitM2Pct, roiM2, oM2, underPct, roiUnder, oOuUnder, lineHdp, oHdpHome, lineOu);
+      renderDashboard(home, away, hitM1Pct, roiM1, oM1, hitM2Pct, roiM2, oM2, over25Pct, underPct, roiOver, roiUnder, oOuOver, oOuUnder, lineHdp, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo);
     }
 
     function runFallbackAnalysis(home, away, count) {
       const oM1 = parseFloat(document.getElementById('oddsM1').value) || 2.50;
       const oM2 = parseFloat(document.getElementById('oddsM2').value) || 2.80;
-      const oOuUnder = parseFloat(document.getElementById('oddsOuUnder').value) || 1.90;
+      const oOuOver = parseFloat(document.getElementById('oddsOuOver').value) || 1.85;
+      const oOuUnder = parseFloat(document.getElementById('oddsOuUnder').value) || 1.95;
+      const oBttsYes = parseFloat(document.getElementById('oddsBttsYes').value) || 1.80;
+      const oBttsNo = parseFloat(document.getElementById('oddsBttsNo').value) || 1.95;
+
       const lineHdp = document.getElementById('hdpHomeLine').value || "0";
       const oHdpHome = parseFloat(document.getElementById('oddsHdpHome').value) || 1.85;
+      const oHdpAway = parseFloat(document.getElementById('oddsHdpAway').value) || 1.95;
       const lineOu = document.getElementById('ouOverLine').value || "2.5";
 
-      const impM1 = (1 / oM1);
-      const impM2 = (1 / oM2);
-      const impUnder = (1 / oOuUnder);
-
-      const simulatedHomeHits = Math.round(impM1 * count);
-      const simulatedAwayHits = Math.round(impM2 * count);
-      const simulatedUnderHits = Math.round(impUnder * count);
-
-      const hitM1Pct = (simulatedHomeHits / count) * 100;
-      const hitM2Pct = (simulatedAwayHits / count) * 100;
-      const underPct = (simulatedUnderHits / count) * 100;
+      const hitM1Pct = (1 / oM1) * 100;
+      const hitM2Pct = (1 / oM2) * 100;
+      const over25Pct = (1 / oOuOver) * 100;
+      const underPct = 100 - over25Pct;
+      const bttsPct = oBttsYes > 0 ? (1 / oBttsYes) * 100 : 52.0;
 
       const roiM1 = ((hitM1Pct / 100) * oM1 - 1) * 100;
       const roiM2 = ((hitM2Pct / 100) * oM2 - 1) * 100;
+      const roiOver = ((over25Pct / 100) * oOuOver - 1) * 100;
       const roiUnder = ((underPct / 100) * oOuUnder - 1) * 100;
 
       document.getElementById('matchInfoBadge').innerText = `${count} MATCH SAMPLE`;
       document.getElementById('totalH2H').innerText = `${count} (PROPOSED)`;
-      document.getElementById('bttsRate').innerText = "52.0%";
-      document.getElementById('over25Rate').innerText = `${(100 - underPct).toFixed(1)}%`;
-      document.getElementById('matchKarakter').innerText = underPct >= 50 ? "KETAT (UNDER)" : "TERBUKA (OVER)";
+      document.getElementById('bttsRate').innerText = `${bttsPct.toFixed(1)}%`;
+      document.getElementById('over25Rate').innerText = `${over25Pct.toFixed(1)}%`;
+      
+      let karakterTxt = "KETAT (LOW xG)";
+      if (bttsPct >= 55 && over25Pct >= 50) {
+        karakterTxt = "SANGAT TERBUKA (BALAS GOL)";
+      } else if (over25Pct >= 50) {
+        karakterTxt = "DOMINAN (OVER)";
+      }
+      document.getElementById('matchKarakter').innerText = karakterTxt;
 
-      renderDashboard(home, away, hitM1Pct, roiM1, oM1, hitM2Pct, roiM2, oM2, underPct, roiUnder, oOuUnder, lineHdp, oHdpHome, lineOu);
+      renderDashboard(home, away, hitM1Pct, roiM1, oM1, hitM2Pct, roiM2, oM2, over25Pct, underPct, roiOver, roiUnder, oOuOver, oOuUnder, lineHdp, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo);
     }
 
-    function renderDashboard(home, away, hitM1, roiM1, oM1, hitM2, roiM2, oM2, hitUnder, roiUnder, oOuUnder, lineHdp, oHdpHome, lineOu) {
+    function renderDashboard(home, away, hitM1, roiM1, oM1, hitM2, roiM2, oM2, over25Pct, underPct, roiOver, roiUnder, oOuOver, oOuUnder, lineHdp, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo) {
       const homeCaps = home.toUpperCase();
       const awayCaps = away.toUpperCase();
       const lineOuCaps = lineOu.toUpperCase();
 
+      // CARDS ROI TOP TOPPER
       document.getElementById('roiCardsContainer').innerHTML = `
         <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
           <div class="flex justify-between items-center"><span class="text-xs font-black text-slate-100 uppercase">${homeCaps} 1X2</span><span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded">MEDIUM</span></div>
@@ -363,31 +449,80 @@
         </div>
 
         <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-          <div class="flex justify-between items-center"><span class="text-xs font-black text-slate-100 uppercase">UNDER ${lineOuCaps}</span><span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded">MEDIUM</span></div>
-          <span class="text-xs text-slate-500 block">${hitUnder.toFixed(1)}% hit rate</span>
-          <div class="flex justify-between items-baseline pt-1"><span class="text-xl font-black ${roiUnder >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${roiUnder >= 0 ? '+' : ''}${roiUnder.toFixed(1)}%</span><span class="text-xs font-bold text-slate-400">@ ${oOuUnder.toFixed(2)}</span></div>
+          <div class="flex justify-between items-center"><span class="text-xs font-black text-slate-100 uppercase">${over25Pct >= 50 ? 'OVER' : 'UNDER'} ${lineOuCaps}</span><span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded">MEDIUM</span></div>
+          <span class="text-xs text-slate-500 block">${(over25Pct >= 50 ? over25Pct : underPct).toFixed(1)}% hit rate</span>
+          <div class="flex justify-between items-baseline pt-1"><span class="text-xl font-black ${(over25Pct >= 50 ? roiOver : roiUnder) >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${(over25Pct >= 50 ? roiOver : roiUnder) >= 0 ? '+' : ''}${(over25Pct >= 50 ? roiOver : roiUnder).toFixed(1)}%</span><span class="text-xs font-bold text-slate-400">@ ${(over25Pct >= 50 ? oOuOver : oOuUnder).toFixed(2)}</span></div>
         </div>
       `;
 
-      document.getElementById('finalPicksContainer').innerHTML = `
-        <div class="bg-slate-950 border border-emerald-500/40 p-4 rounded-xl flex justify-between items-center">
-          <div>
-            <span class="bg-emerald-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded uppercase">🔥 PRIMARY PICK</span>
-            <h3 class="text-base font-extrabold text-white mt-1 uppercase">ASIAN HANDICAP: ${homeCaps} (${lineHdp})</h3>
-            <p class="text-xs text-slate-400 mt-0.5">ROI Positif +${roiM1.toFixed(1)}%. Menahan line ${lineHdp} aman dari risiko seri.</p>
-          </div>
-          <span class="text-lg font-black text-emerald-400">@ ${oHdpHome.toFixed(2)}</span>
-        </div>
+      // 1. KUMPULKAN SEMUA CANDIDATE PICKS
+      const picks = [
+        {
+          type: "ASIAN HANDICAP",
+          title: `ASIAN HANDICAP: ${hitM1 >= hitM2 ? homeCaps : awayCaps} (${lineHdp})`,
+          odds: hitM1 >= hitM2 ? oHdpHome : oHdpAway,
+          roi: hitM1 >= hitM2 ? roiM1 : roiM2,
+          hitRate: hitM1 >= hitM2 ? hitM1 : hitM2,
+          note: `Menahan pergerakan skor di line ${lineHdp}. Memberikan proteksi modal paling aman dari risiko laga imbang (draw risk protection).`
+        },
+        {
+          type: "OVER / UNDER",
+          title: over25Pct >= 50 ? `OVER / UNDER: OVER ${lineOuCaps}` : `OVER / UNDER: UNDER ${lineOuCaps}`,
+          odds: over25Pct >= 50 ? oOuOver : oOuUnder,
+          roi: over25Pct >= 50 ? roiOver : roiUnder,
+          hitRate: over25Pct >= 50 ? over25Pct : underPct,
+          note: over25Pct >= 50 
+            ? `Historis duel kedua tim mencatat rasio gol tinggi (${over25Pct.toFixed(1)}% Over). Gaya bermain Home/Away cenderung terbuka dan agresif.` 
+            : `Karakteristik pertandingan terindikasi ketat (low xG). Pertahanan kedua tim cukup rapat dengan rasio Under mencapai ${underPct.toFixed(1)}%.`
+        },
+        {
+          type: "BTTS",
+          title: bttsPct >= 50 ? `BOTH TEAMS TO SCORE: BTTS (YA)` : `BOTH TEAMS TO SCORE: BTTS (TIDAK)`,
+          odds: bttsPct >= 50 ? oBttsYes : oBttsNo,
+          roi: bttsPct >= 50 ? ((bttsPct / 100) * oBttsYes - 1) * 100 : (((100 - bttsPct) / 100) * oBttsNo - 1) * 100,
+          hitRate: bttsPct >= 50 ? bttsPct : (100 - bttsPct),
+          note: bttsPct >= 50 
+            ? `Kombinasi ketajaman lini depan lawan kebocoran pertahanan kandang/tandang tinggi. Peluang kedua tim saling membalas gol mencapai ${bttsPct.toFixed(1)}%.` 
+            : `Salah satu tim memiliki tren tumpul saat tandang atau pertahanan tuan rumah sangat kokoh.`
+        },
+        {
+          type: "1X2 MATCH WINNER",
+          title: roiM1 >= roiM2 ? `1X2 MATCH WINNER: ${homeCaps} (M1)` : `1X2 MATCH WINNER: ${awayCaps} (M2)`,
+          odds: roiM1 >= roiM2 ? oM1 : oM2,
+          roi: roiM1 >= roiM2 ? roiM1 : roiM2,
+          hitRate: roiM1 >= roiM2 ? hitM1 : hitM2,
+          note: `Memilih kemenangan langsung tim. Memberikan expected value (+${(roiM1 >= roiM2 ? roiM1 : roiM2).toFixed(1)}%) paling ideal bagi pergerakan pasaran 1X2.`
+        }
+      ];
 
-        <div class="bg-slate-950 border border-sky-500/40 p-4 rounded-xl flex justify-between items-center">
-          <div>
-            <span class="bg-sky-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded uppercase">💎 VALUE PICK</span>
-            <h3 class="text-base font-extrabold text-white mt-1 uppercase">OVER / UNDER: UNDER ${lineOuCaps}</h3>
-            <p class="text-xs text-slate-400 mt-0.5">Rasio pertandingan imbang/ketat tinggi dengan hit rate ${hitUnder.toFixed(1)}%.</p>
+      // 2. URUTKAN PICKS BERDASARKAN ROI & HIT RATE TERTINGGI (AUTO-RANKING)
+      picks.sort((a, b) => (b.roi + b.hitRate) - (a.roi + a.hitRate));
+
+      // 3. BADGES & COLORS
+      const badges = [
+        { label: "🔥 TOP PICK 1 (PRIMARY CHOICE)", color: "emerald" },
+        { label: "💎 TOP PICK 2 (VALUE CHOICE)", color: "sky" },
+        { label: "⭐ TOP PICK 3 (STRONG CHOICE)", color: "amber" },
+        { label: "🎯 TOP PICK 4 (ALTERNATIVE CHOICE)", color: "purple" }
+      ];
+
+      // 4. GENERATE HTML CARDS
+      let htmlPicks = "";
+      picks.forEach((pick, index) => {
+        const badge = badges[index];
+        htmlPicks += `
+          <div class="bg-slate-950 border border-${badge.color}-500/40 p-5 rounded-xl space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="bg-${badge.color}-500 text-slate-950 text-[10px] font-black px-2.5 py-1 rounded uppercase">${badge.label}</span>
+              <span class="text-lg font-black text-${badge.color}-400">@ ${pick.odds.toFixed(2)}</span>
+            </div>
+            <h3 class="text-base font-extrabold text-white uppercase">${pick.title}</h3>
+            <p class="text-xs text-slate-400 leading-relaxed border-t border-slate-900 pt-2 mt-1"><strong>📝 Notes:</strong> ${pick.note}</p>
           </div>
-          <span class="text-lg font-black text-sky-400">@ ${oOuUnder.toFixed(2)}</span>
-        </div>
-      `;
+        `;
+      });
+
+      document.getElementById('finalPicksContainer').innerHTML = htmlPicks;
     }
   </script>
 </body>
