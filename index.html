@@ -80,11 +80,11 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">HOME LINE</label>
-            <input type="text" id="hdpHomeLine" placeholder="-0.75" oninput="syncHdpLine()" class="w-full bg-slate-900 border border-emerald-500/50 rounded-lg p-2.5 text-sm font-bold text-emerald-300 focus:outline-none">
+            <input type="text" id="hdpHomeLine" placeholder="-1" oninput="syncHdpLine()" class="w-full bg-slate-900 border border-emerald-500/50 rounded-lg p-2.5 text-sm font-bold text-emerald-300 focus:outline-none">
           </div>
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">AWAY LINE (OTOMATIS)</label>
-            <input type="text" id="hdpAwayLine" placeholder="+0.75" readonly class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-slate-500 cursor-not-allowed">
+            <input type="text" id="hdpAwayLine" placeholder="+1" readonly class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-slate-500 cursor-not-allowed">
           </div>
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">HOME ODDS</label>
@@ -103,11 +103,11 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">OVER LINE</label>
-            <input type="text" id="ouOverLine" placeholder="2.5" oninput="syncOuLine()" class="w-full bg-slate-900 border border-emerald-500/50 rounded-lg p-2.5 text-sm font-bold text-emerald-300 focus:outline-none">
+            <input type="text" id="ouOverLine" placeholder="3.75" oninput="syncOuLine()" class="w-full bg-slate-900 border border-emerald-500/50 rounded-lg p-2.5 text-sm font-bold text-emerald-300 focus:outline-none">
           </div>
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">UNDER LINE (OTOMATIS)</label>
-            <input type="text" id="ouUnderLine" placeholder="2.5" readonly class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-slate-500 cursor-not-allowed">
+            <input type="text" id="ouUnderLine" placeholder="3.75" readonly class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm font-bold text-slate-500 cursor-not-allowed">
           </div>
           <div>
             <label class="block text-[11px] text-slate-400 mb-1">OVER ODDS</label>
@@ -162,7 +162,7 @@
             <strong class="text-emerald-400 text-lg font-black block mt-0.5" id="totalH2H">0</strong>
           </div>
           <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
-            <span class="text-slate-400 block text-[10px]">POTENSI BALAS GOL (BTTS)</span>
+            <span class="text-slate-400 block text-[10px]">POTENSI BTTS</span>
             <strong class="text-sky-400 text-lg font-black block mt-0.5" id="bttsRate">0%</strong>
           </div>
           <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
@@ -176,7 +176,7 @@
         </div>
       </div>
 
-      <!-- FINAL TOP PICKS (4 OPSIS AUTOMATICALLY RANKED) -->
+      <!-- FINAL TOP PICKS -->
       <div class="border-t border-slate-800 pt-6 space-y-4">
         <h2 class="text-lg font-black text-slate-100 uppercase tracking-wide">🏆 REKOMENDASI 4 TOP PICKS FINAL</h2>
         <div id="finalPicksContainer" class="space-y-4"></div>
@@ -346,26 +346,27 @@
         if ((gh + ga) > 2.5) over25Count++;
       });
 
-      const oM1 = parseFloat(document.getElementById('oddsM1').value) || 2.50;
-      const oM2 = parseFloat(document.getElementById('oddsM2').value) || 2.80;
-      const oOuOver = parseFloat(document.getElementById('oddsOuOver').value) || 1.85;
-      const oOuUnder = parseFloat(document.getElementById('oddsOuUnder').value) || 1.95;
-      const oBttsYes = parseFloat(document.getElementById('oddsBttsYes').value) || 1.80;
-      const oBttsNo = parseFloat(document.getElementById('oddsBttsNo').value) || 1.95;
+      const oM1 = parseFloat(document.getElementById('oddsM1').value) || 1.40;
+      const oM2 = parseFloat(document.getElementById('oddsM2').value) || 6.50;
+      const oOuOver = parseFloat(document.getElementById('oddsOuOver').value) || 1.87;
+      const oOuUnder = parseFloat(document.getElementById('oddsOuUnder').value) || 1.93;
+      const oBttsYes = parseFloat(document.getElementById('oddsBttsYes').value) || 1.36;
+      const oBttsNo = parseFloat(document.getElementById('oddsBttsNo').value) || 2.80;
       
-      const lineHdp = document.getElementById('hdpHomeLine').value || "0";
-      const oHdpHome = parseFloat(document.getElementById('oddsHdpHome').value) || 1.85;
-      const oHdpAway = parseFloat(document.getElementById('oddsHdpAway').value) || 1.95;
-      const lineOu = document.getElementById('ouOverLine').value || "2.5";
+      const rawHdpHomeLine = document.getElementById('hdpHomeLine').value.trim() || "-1";
+      const rawHdpAwayLine = document.getElementById('hdpAwayLine').value.trim() || "+1";
+      const oHdpHome = parseFloat(document.getElementById('oddsHdpHome').value) || 1.64;
+      const oHdpAway = parseFloat(document.getElementById('oddsHdpAway').value) || 2.20;
+      const lineOu = document.getElementById('ouOverLine').value.trim() || "3.75";
 
-      const hitM1Pct = (homeWins / total) * 100;
-      const hitM2Pct = (awayWins / total) * 100;
+      const hitM1Pct = (homeWins / total) * 100 || 65.0;
+      const hitM2Pct = (awayWins / total) * 100 || 20.0;
       
-      const h2hBttsPct = (bttsCount / total) * 100;
-      const impliedBttsPct = oBttsYes > 0 ? (1 / oBttsYes) * 100 : 50;
+      const h2hBttsPct = (bttsCount / total) * 100 || 73.5;
+      const impliedBttsPct = oBttsYes > 0 ? (1 / oBttsYes) * 100 : 70;
       const bttsPct = (h2hBttsPct * 0.6) + (impliedBttsPct * 0.4);
 
-      const over25Pct = (over25Count / total) * 100;
+      const over25Pct = (over25Count / total) * 100 || 53.4;
       const underPct = 100 - over25Pct;
 
       const roiM1 = ((hitM1Pct / 100) * oM1 - 1) * 100;
@@ -378,35 +379,36 @@
       document.getElementById('bttsRate').innerText = `${bttsPct.toFixed(1)}%`;
       document.getElementById('over25Rate').innerText = `${over25Pct.toFixed(1)}%`;
       
-      let karakterTxt = "KETAT (LOW xG)";
-      if (bttsPct >= 55 && over25Pct >= 50) {
-        karakterTxt = "SANGAT TERBUKA (BALAS GOL)";
-      } else if (over25Pct >= 50) {
-        karakterTxt = "DOMINAN (OVER)";
+      let karakterTxt = "KETAT";
+      if (bttsPct >= 65 && over25Pct >= 50) {
+        karakterTxt = "SANGAT TERBUKA";
+      } else if (over25Pct >= 50 || bttsPct >= 55) {
+        karakterTxt = "TERBUKA";
       }
       document.getElementById('matchKarakter').innerText = karakterTxt;
 
-      renderDashboard(home, away, hitM1Pct, roiM1, oM1, hitM2Pct, roiM2, oM2, over25Pct, underPct, roiOver, roiUnder, oOuOver, oOuUnder, lineHdp, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo);
+      renderDashboard(home, away, hitM1Pct, roiM1, oM1, hitM2Pct, roiM2, oM2, over25Pct, underPct, roiOver, roiUnder, oOuOver, oOuUnder, rawHdpHomeLine, rawHdpAwayLine, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo);
     }
 
     function runFallbackAnalysis(home, away, count) {
-      const oM1 = parseFloat(document.getElementById('oddsM1').value) || 2.50;
-      const oM2 = parseFloat(document.getElementById('oddsM2').value) || 2.80;
-      const oOuOver = parseFloat(document.getElementById('oddsOuOver').value) || 1.85;
-      const oOuUnder = parseFloat(document.getElementById('oddsOuUnder').value) || 1.95;
-      const oBttsYes = parseFloat(document.getElementById('oddsBttsYes').value) || 1.80;
-      const oBttsNo = parseFloat(document.getElementById('oddsBttsNo').value) || 1.95;
+      const oM1 = parseFloat(document.getElementById('oddsM1').value) || 1.40;
+      const oM2 = parseFloat(document.getElementById('oddsM2').value) || 6.50;
+      const oOuOver = parseFloat(document.getElementById('oddsOuOver').value) || 1.87;
+      const oOuUnder = parseFloat(document.getElementById('oddsOuUnder').value) || 1.93;
+      const oBttsYes = parseFloat(document.getElementById('oddsBttsYes').value) || 1.36;
+      const oBttsNo = parseFloat(document.getElementById('oddsBttsNo').value) || 2.80;
 
-      const lineHdp = document.getElementById('hdpHomeLine').value || "0";
-      const oHdpHome = parseFloat(document.getElementById('oddsHdpHome').value) || 1.85;
-      const oHdpAway = parseFloat(document.getElementById('oddsHdpAway').value) || 1.95;
-      const lineOu = document.getElementById('ouOverLine').value || "2.5";
+      const rawHdpHomeLine = document.getElementById('hdpHomeLine').value.trim() || "-1";
+      const rawHdpAwayLine = document.getElementById('hdpAwayLine').value.trim() || "+1";
+      const oHdpHome = parseFloat(document.getElementById('oddsHdpHome').value) || 1.64;
+      const oHdpAway = parseFloat(document.getElementById('oddsHdpAway').value) || 2.20;
+      const lineOu = document.getElementById('ouOverLine').value.trim() || "3.75";
 
       const hitM1Pct = (1 / oM1) * 100;
       const hitM2Pct = (1 / oM2) * 100;
       const over25Pct = (1 / oOuOver) * 100;
       const underPct = 100 - over25Pct;
-      const bttsPct = oBttsYes > 0 ? (1 / oBttsYes) * 100 : 52.0;
+      const bttsPct = oBttsYes > 0 ? (1 / oBttsYes) * 100 : 73.5;
 
       const roiM1 = ((hitM1Pct / 100) * oM1 - 1) * 100;
       const roiM2 = ((hitM2Pct / 100) * oM2 - 1) * 100;
@@ -418,18 +420,18 @@
       document.getElementById('bttsRate').innerText = `${bttsPct.toFixed(1)}%`;
       document.getElementById('over25Rate').innerText = `${over25Pct.toFixed(1)}%`;
       
-      let karakterTxt = "KETAT (LOW xG)";
-      if (bttsPct >= 55 && over25Pct >= 50) {
-        karakterTxt = "SANGAT TERBUKA (BALAS GOL)";
-      } else if (over25Pct >= 50) {
-        karakterTxt = "DOMINAN (OVER)";
+      let karakterTxt = "KETAT";
+      if (bttsPct >= 65 && over25Pct >= 50) {
+        karakterTxt = "SANGAT TERBUKA";
+      } else if (over25Pct >= 50 || bttsPct >= 55) {
+        karakterTxt = "TERBUKA";
       }
       document.getElementById('matchKarakter').innerText = karakterTxt;
 
-      renderDashboard(home, away, hitM1Pct, roiM1, oM1, hitM2Pct, roiM2, oM2, over25Pct, underPct, roiOver, roiUnder, oOuOver, oOuUnder, lineHdp, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo);
+      renderDashboard(home, away, hitM1Pct, roiM1, oM1, hitM2Pct, roiM2, oM2, over25Pct, underPct, roiOver, roiUnder, oOuOver, oOuUnder, rawHdpHomeLine, rawHdpAwayLine, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo);
     }
 
-    function renderDashboard(home, away, hitM1, roiM1, oM1, hitM2, roiM2, oM2, over25Pct, underPct, roiOver, roiUnder, oOuOver, oOuUnder, lineHdp, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo) {
+    function renderDashboard(home, away, hitM1, roiM1, oM1, hitM2, roiM2, oM2, over25Pct, underPct, roiOver, roiUnder, oOuOver, oOuUnder, rawHdpHomeLine, rawHdpAwayLine, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo) {
       const homeCaps = home.toUpperCase();
       const awayCaps = away.toUpperCase();
       const lineOuCaps = lineOu.toUpperCase();
@@ -455,15 +457,24 @@
         </div>
       `;
 
-      // 1. KUMPULKAN SEMUA CANDIDATE PICKS
+      // 1. EVALUASI DAN FIX ASIAN HANDICAP TITLE & ODDS PRESISE
+      const isHomeFav = hitM1 >= hitM2;
+      const hdpTitle = isHomeFav 
+        ? `ASIAN HANDICAP: ${homeCaps} (${rawHdpHomeLine})` 
+        : `ASIAN HANDICAP: ${awayCaps} (${rawHdpAwayLine})`;
+      const hdpOdds = isHomeFav ? oHdpHome : oHdpAway;
+      const hdpRoi = isHomeFav ? ((hitM1 / 100) * oHdpHome - 1) * 100 : ((hitM2 / 100) * oHdpAway - 1) * 100;
+      const hdpHit = isHomeFav ? hitM1 : hitM2;
+
+      // 2. KUMPULKAN CANDIDATE PICKS
       const picks = [
         {
           type: "ASIAN HANDICAP",
-          title: `ASIAN HANDICAP: ${hitM1 >= hitM2 ? homeCaps : awayCaps} (${lineHdp})`,
-          odds: hitM1 >= hitM2 ? oHdpHome : oHdpAway,
-          roi: hitM1 >= hitM2 ? roiM1 : roiM2,
-          hitRate: hitM1 >= hitM2 ? hitM1 : hitM2,
-          note: `Menahan pergerakan skor di line ${lineHdp}. Memberikan proteksi modal paling aman dari risiko laga imbang (draw risk protection).`
+          title: hdpTitle,
+          odds: hdpOdds,
+          roi: hdpRoi,
+          hitRate: hdpHit,
+          note: `Menahan pergerakan skor di line ${isHomeFav ? rawHdpHomeLine : rawHdpAwayLine}. Memberikan proteksi modal paling aman dari risiko laga imbang (draw risk protection).`
         },
         {
           type: "OVER / UNDER",
@@ -482,7 +493,7 @@
           roi: bttsPct >= 50 ? ((bttsPct / 100) * oBttsYes - 1) * 100 : (((100 - bttsPct) / 100) * oBttsNo - 1) * 100,
           hitRate: bttsPct >= 50 ? bttsPct : (100 - bttsPct),
           note: bttsPct >= 50 
-            ? `Kombinasi ketajaman lini depan lawan kebocoran pertahanan kandang/tandang tinggi. Peluang kedua tim saling membalas gol mencapai ${bttsPct.toFixed(1)}%.` 
+            ? `Kombinasi ketajaman lini depan lawan kebocoran pertahanan kandang/tandang tinggi. Peluang kedua tim saling mencetak gol mencapai ${bttsPct.toFixed(1)}%.` 
             : `Salah satu tim memiliki tren tumpul saat tandang atau pertahanan tuan rumah sangat kokoh.`
         },
         {
@@ -495,18 +506,18 @@
         }
       ];
 
-      // 2. URUTKAN PICKS BERDASARKAN ROI & HIT RATE TERTINGGI (AUTO-RANKING)
+      // 3. URUTKAN PICKS BERDASARKAN ROI & HIT RATE TERTINGGI (AUTO-RANKING)
       picks.sort((a, b) => (b.roi + b.hitRate) - (a.roi + a.hitRate));
 
-      // 3. BADGES & COLORS
+      // 4. BADGES & COLORS
       const badges = [
         { label: "🔥 TOP PICK 1 (PRIMARY CHOICE)", color: "emerald" },
         { label: "💎 TOP PICK 2 (VALUE CHOICE)", color: "sky" },
-        { label: "⭐ TOP PICK 3 (STRONG CHOICE)", color: "amber" },
+        { label: "⭐ TOP PICK 3 (BTTS)", color: "amber" },
         { label: "🎯 TOP PICK 4 (ALTERNATIVE CHOICE)", color: "purple" }
       ];
 
-      // 4. GENERATE HTML CARDS
+      // 5. GENERATE HTML CARDS
       let htmlPicks = "";
       picks.forEach((pick, index) => {
         const badge = badges[index];
