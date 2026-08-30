@@ -178,8 +178,14 @@
 
       <!-- FINAL TOP PICKS -->
       <div class="border-t border-slate-800 pt-6 space-y-4">
-        <h2 class="text-lg font-black text-slate-100 uppercase tracking-wide">🏆 REKOMENDASI 4 TOP PICKS FINAL</h2>
+        <h2 class="text-lg font-black text-slate-100 uppercase tracking-wide">🏆 REKOMENDASI TOP PICKS TERBAIK</h2>
         <div id="finalPicksContainer" class="space-y-4"></div>
+      </div>
+
+      <!-- UNPICKED / RISKY PICKS SECTION -->
+      <div class="border-t border-slate-800 pt-6 space-y-4">
+        <h2 class="text-sm font-bold text-rose-400 uppercase tracking-wide">⚠️ PASARAN HIGH RISK / TIDAK DIREKOMENDASIKAN (HINDARI)</h2>
+        <div id="unpickedContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
       </div>
 
     </div>
@@ -188,7 +194,7 @@
 
   <script>
     // ============================================================
-    // 🔑 BARIS 248: PASTE API-KEY DARI DASHBOARD API-SPORTS KAMU DISINI
+    // 🔑 BARIS 254: PASTE API-KEY DARI DASHBOARD API-SPORTS KAMU DISINI
     // ============================================================
     const APISPORTS_KEY = "PASTE_API_KEY_KAMU_DISINI";
     // ============================================================
@@ -335,21 +341,26 @@
 
     function processRealAnalysis(home, away, matches, count) {
       const total = matches.length || count;
-      let homeWins = 0, awayWins = 0, bttsCount = 0, over25Count = 0;
+      let homeWins = 0, draws = 0, awayWins = 0, bttsCount = 0, over25Count = 0;
 
       matches.forEach(m => {
         const gh = m.goals.home || 0;
         const ga = m.goals.away || 0;
         if (gh > ga) homeWins++;
-        if (ga > gh) awayWins++;
+        else if (ga > gh) awayWins++;
+        else draws++;
+
         if (gh > 0 && ga > 0) bttsCount++;
         if ((gh + ga) > 2.5) over25Count++;
       });
 
       const oM1 = parseFloat(document.getElementById('oddsM1').value) || 1.40;
+      const oX  = parseFloat(document.getElementById('oddsX').value)  || 4.50;
       const oM2 = parseFloat(document.getElementById('oddsM2').value) || 6.50;
+      
       const oOuOver = parseFloat(document.getElementById('oddsOuOver').value) || 1.87;
       const oOuUnder = parseFloat(document.getElementById('oddsOuUnder').value) || 1.93;
+      
       const oBttsYes = parseFloat(document.getElementById('oddsBttsYes').value) || 1.36;
       const oBttsNo = parseFloat(document.getElementById('oddsBttsNo').value) || 2.80;
       
@@ -360,6 +371,7 @@
       const lineOu = document.getElementById('ouOverLine').value.trim() || "3.75";
 
       const hitM1Pct = (homeWins / total) * 100 || 65.0;
+      const hitXPct  = (draws / total) * 100 || 15.0;
       const hitM2Pct = (awayWins / total) * 100 || 20.0;
       
       const h2hBttsPct = (bttsCount / total) * 100 || 73.5;
@@ -370,9 +382,8 @@
       const underPct = 100 - over25Pct;
 
       const roiM1 = ((hitM1Pct / 100) * oM1 - 1) * 100;
+      const roiX  = ((hitXPct / 100) * oX - 1) * 100;
       const roiM2 = ((hitM2Pct / 100) * oM2 - 1) * 100;
-      const roiOver = ((over25Pct / 100) * oOuOver - 1) * 100;
-      const roiUnder = ((underPct / 100) * oOuUnder - 1) * 100;
 
       document.getElementById('matchInfoBadge').innerText = `${total} MATCH SAMPLE`;
       document.getElementById('totalH2H').innerText = total;
@@ -387,14 +398,17 @@
       }
       document.getElementById('matchKarakter').innerText = karakterTxt;
 
-      renderDashboard(home, away, hitM1Pct, roiM1, oM1, hitM2Pct, roiM2, oM2, over25Pct, underPct, roiOver, roiUnder, oOuOver, oOuUnder, rawHdpHomeLine, rawHdpAwayLine, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo);
+      renderDashboard(home, away, hitM1Pct, roiM1, oM1, hitXPct, roiX, oX, hitM2Pct, roiM2, oM2, over25Pct, underPct, oOuOver, oOuUnder, rawHdpHomeLine, rawHdpAwayLine, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo);
     }
 
     function runFallbackAnalysis(home, away, count) {
       const oM1 = parseFloat(document.getElementById('oddsM1').value) || 1.40;
+      const oX  = parseFloat(document.getElementById('oddsX').value)  || 4.50;
       const oM2 = parseFloat(document.getElementById('oddsM2').value) || 6.50;
+      
       const oOuOver = parseFloat(document.getElementById('oddsOuOver').value) || 1.87;
       const oOuUnder = parseFloat(document.getElementById('oddsOuUnder').value) || 1.93;
+      
       const oBttsYes = parseFloat(document.getElementById('oddsBttsYes').value) || 1.36;
       const oBttsNo = parseFloat(document.getElementById('oddsBttsNo').value) || 2.80;
 
@@ -405,15 +419,16 @@
       const lineOu = document.getElementById('ouOverLine').value.trim() || "3.75";
 
       const hitM1Pct = (1 / oM1) * 100;
+      const hitXPct  = (1 / oX) * 100;
       const hitM2Pct = (1 / oM2) * 100;
+      
       const over25Pct = (1 / oOuOver) * 100;
       const underPct = 100 - over25Pct;
       const bttsPct = oBttsYes > 0 ? (1 / oBttsYes) * 100 : 73.5;
 
       const roiM1 = ((hitM1Pct / 100) * oM1 - 1) * 100;
+      const roiX  = ((hitXPct / 100) * oX - 1) * 100;
       const roiM2 = ((hitM2Pct / 100) * oM2 - 1) * 100;
-      const roiOver = ((over25Pct / 100) * oOuOver - 1) * 100;
-      const roiUnder = ((underPct / 100) * oOuUnder - 1) * 100;
 
       document.getElementById('matchInfoBadge').innerText = `${count} MATCH SAMPLE`;
       document.getElementById('totalH2H').innerText = `${count} (PROPOSED)`;
@@ -428,15 +443,15 @@
       }
       document.getElementById('matchKarakter').innerText = karakterTxt;
 
-      renderDashboard(home, away, hitM1Pct, roiM1, oM1, hitM2Pct, roiM2, oM2, over25Pct, underPct, roiOver, roiUnder, oOuOver, oOuUnder, rawHdpHomeLine, rawHdpAwayLine, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo);
+      renderDashboard(home, away, hitM1Pct, roiM1, oM1, hitXPct, roiX, oX, hitM2Pct, roiM2, oM2, over25Pct, underPct, oOuOver, oOuUnder, rawHdpHomeLine, rawHdpAwayLine, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo);
     }
 
-    function renderDashboard(home, away, hitM1, roiM1, oM1, hitM2, roiM2, oM2, over25Pct, underPct, roiOver, roiUnder, oOuOver, oOuUnder, rawHdpHomeLine, rawHdpAwayLine, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo) {
+    function renderDashboard(home, away, hitM1, roiM1, oM1, hitX, roiX, oX, hitM2, roiM2, oM2, over25Pct, underPct, oOuOver, oOuUnder, rawHdpHomeLine, rawHdpAwayLine, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo) {
       const homeCaps = home.toUpperCase();
       const awayCaps = away.toUpperCase();
       const lineOuCaps = lineOu.toUpperCase();
 
-      // CARDS ROI TOP TOPPER
+      // CARDS ROI TOPPER
       document.getElementById('roiCardsContainer').innerHTML = `
         <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
           <div class="flex justify-between items-center"><span class="text-xs font-black text-slate-100 uppercase">${homeCaps} 1X2</span><span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded">MEDIUM</span></div>
@@ -457,70 +472,120 @@
         </div>
       `;
 
-      // 1. EVALUASI DAN FIX ASIAN HANDICAP TITLE & ODDS PRESISE
-      const isHomeFav = hitM1 >= hitM2;
-      const hdpTitle = isHomeFav 
-        ? `ASIAN HANDICAP: ${homeCaps} (${rawHdpHomeLine})` 
-        : `ASIAN HANDICAP: ${awayCaps} (${rawHdpAwayLine})`;
-      const hdpOdds = isHomeFav ? oHdpHome : oHdpAway;
-      const hdpRoi = isHomeFav ? ((hitM1 / 100) * oHdpHome - 1) * 100 : ((hitM2 / 100) * oHdpAway - 1) * 100;
-      const hdpHit = isHomeFav ? hitM1 : hitM2;
+      // 1. HITUNG ROI UNTUK SEMUA OPSI PASARAN
+      const roiHdpHome = ((hitM1 / 100) * oHdpHome - 1) * 100;
+      const roiHdpAway = ((hitM2 / 100) * oHdpAway - 1) * 100;
+      
+      const roiOver  = ((over25Pct / 100) * oOuOver - 1) * 100;
+      const roiUnder = ((underPct / 100) * oOuUnder - 1) * 100;
 
-      // 2. KUMPULKAN CANDIDATE PICKS
-      const picks = [
+      const roiBttsYes = ((bttsPct / 100) * oBttsYes - 1) * 100;
+      const roiBttsNo  = (((100 - bttsPct) / 100) * oBttsNo - 1) * 100;
+
+      // 2. DAFTAR SELURUH CANDIDATE PASARAN
+      const allCandidates = [
         {
-          type: "ASIAN HANDICAP",
-          title: hdpTitle,
-          odds: hdpOdds,
-          roi: hdpRoi,
-          hitRate: hdpHit,
-          note: `Menahan pergerakan skor di line ${isHomeFav ? rawHdpHomeLine : rawHdpAwayLine}. Memberikan proteksi modal paling aman dari risiko laga imbang (draw risk protection).`
+          type: "HANDICAP HOME",
+          title: `ASIAN HANDICAP: ${homeCaps} (${rawHdpHomeLine})`,
+          odds: oHdpHome,
+          roi: roiHdpHome,
+          hitRate: hitM1,
+          note: `Home menahan line ${rawHdpHomeLine}. Memberikan proteksi modal paling aman dari risiko laga imbang.`
         },
         {
-          type: "OVER / UNDER",
-          title: over25Pct >= 50 ? `OVER / UNDER: OVER ${lineOuCaps}` : `OVER / UNDER: UNDER ${lineOuCaps}`,
-          odds: over25Pct >= 50 ? oOuOver : oOuUnder,
-          roi: over25Pct >= 50 ? roiOver : roiUnder,
-          hitRate: over25Pct >= 50 ? over25Pct : underPct,
-          note: over25Pct >= 50 
-            ? `Historis duel kedua tim mencatat rasio gol tinggi (${over25Pct.toFixed(1)}% Over). Gaya bermain Home/Away cenderung terbuka dan agresif.` 
-            : `Karakteristik pertandingan terindikasi ketat (low xG). Pertahanan kedua tim cukup rapat dengan rasio Under mencapai ${underPct.toFixed(1)}%.`
+          type: "HANDICAP AWAY",
+          title: `ASIAN HANDICAP: ${awayCaps} (${rawHdpAwayLine})`,
+          odds: oHdpAway,
+          roi: roiHdpAway,
+          hitRate: hitM2,
+          note: `Away menahan line ${rawHdpAwayLine}. Memberikan proteksi modal aman dari pergerakan poin lawan.`
         },
         {
-          type: "BTTS",
-          title: bttsPct >= 50 ? `BOTH TEAMS TO SCORE: BTTS (YA)` : `BOTH TEAMS TO SCORE: BTTS (TIDAK)`,
-          odds: bttsPct >= 50 ? oBttsYes : oBttsNo,
-          roi: bttsPct >= 50 ? ((bttsPct / 100) * oBttsYes - 1) * 100 : (((100 - bttsPct) / 100) * oBttsNo - 1) * 100,
-          hitRate: bttsPct >= 50 ? bttsPct : (100 - bttsPct),
-          note: bttsPct >= 50 
-            ? `Kombinasi ketajaman lini depan lawan kebocoran pertahanan kandang/tandang tinggi. Peluang kedua tim saling mencetak gol mencapai ${bttsPct.toFixed(1)}%.` 
-            : `Salah satu tim memiliki tren tumpul saat tandang atau pertahanan tuan rumah sangat kokoh.`
+          type: "OVER",
+          title: `OVER / UNDER: OVER ${lineOuCaps}`,
+          odds: oOuOver,
+          roi: roiOver,
+          hitRate: over25Pct,
+          note: `Historis duel kedua tim mencatat rasio gol tinggi (${over25Pct.toFixed(1)}% Over). Gaya bermain cenderung terbuka.`
         },
         {
-          type: "1X2 MATCH WINNER",
-          title: roiM1 >= roiM2 ? `1X2 MATCH WINNER: ${homeCaps} (M1)` : `1X2 MATCH WINNER: ${awayCaps} (M2)`,
-          odds: roiM1 >= roiM2 ? oM1 : oM2,
-          roi: roiM1 >= roiM2 ? roiM1 : roiM2,
-          hitRate: roiM1 >= roiM2 ? hitM1 : hitM2,
-          note: `Memilih kemenangan langsung tim. Memberikan expected value (+${(roiM1 >= roiM2 ? roiM1 : roiM2).toFixed(1)}%) paling ideal bagi pergerakan pasaran 1X2.`
+          type: "UNDER",
+          title: `OVER / UNDER: UNDER ${lineOuCaps}`,
+          odds: oOuUnder,
+          roi: roiUnder,
+          hitRate: underPct,
+          note: `Karakteristik pertandingan terindikasi ketat (low xG). Pertahanan kedua tim cukup rapat dengan rasio Under ${underPct.toFixed(1)}%.`
+        },
+        {
+          type: "BTTS YA",
+          title: `BOTH TEAMS TO SCORE: BTTS (YA)`,
+          odds: oBttsYes,
+          roi: roiBttsYes,
+          hitRate: bttsPct,
+          note: `Kombinasi ketajaman lini depan lawan kebocoran pertahanan tinggi. Peluang kedua tim saling mencetak gol mencapai ${bttsPct.toFixed(1)}%.`
+        },
+        {
+          type: "BTTS TIDAK",
+          title: `BOTH TEAMS TO SCORE: BTTS (TIDAK)`,
+          odds: oBttsNo,
+          roi: roiBttsNo,
+          hitRate: (100 - bttsPct),
+          note: `Salah satu tim memiliki tren tumpul saat tandang atau pertahanan tuan rumah sangat kokoh.`
+        },
+        {
+          type: "1X2 HOME",
+          title: `1X2 MATCH WINNER: ${homeCaps} (M1)`,
+          odds: oM1,
+          roi: roiM1,
+          hitRate: hitM1,
+          note: `Memilih kemenangan langsung Home. Memberikan expected value (+${roiM1.toFixed(1)}%) bagi pasaran 1X2.`
+        },
+        {
+          type: "1X2 DRAW",
+          title: `1X2 MATCH WINNER: DRAW (SERI)`,
+          odds: oX,
+          roi: roiX,
+          hitRate: hitX,
+          note: `Hasil imbang murni. Memiliki rasio imbang ${hitX.toFixed(1)}% dari pasaran 1X2.`
+        },
+        {
+          type: "1X2 AWAY",
+          title: `1X2 MATCH WINNER: ${awayCaps} (M2)`,
+          odds: oM2,
+          roi: roiM2,
+          hitRate: hitM2,
+          note: `Memilih kemenangan langsung Away. Memiliki keunggulan nilai efisiensi pasaran bagi tim tamu.`
         }
       ];
 
-      // 3. URUTKAN PICKS BERDASARKAN ROI & HIT RATE TERTINGGI (AUTO-RANKING)
-      picks.sort((a, b) => (b.roi + b.hitRate) - (a.roi + a.hitRate));
+      // 3. RUMUS BOBOT SCORE = (HitRate x 0.6) + (ROI x 0.4)
+      allCandidates.forEach(item => {
+        item.score = (item.hitRate * 0.6) + (item.roi * 0.4);
+      });
 
-      // 4. BADGES & COLORS
+      // 4. URUTKAN KANDIDAT DARI SCORE TERBESAR KE TERKECIL
+      allCandidates.sort((a, b) => b.score - a.score);
+
+      // 5. FILTER: PICK HARUS POPULER DAN VALUE (Hit Rate >= 50% DAN ROI >= 0%)
+      const topPicks = allCandidates.filter(item => item.hitRate >= 50 && item.roi >= 0).slice(0, 4);
+
+      // JIKA TIDAK ADA YANG MEMENUHI SYARAT KETAT, AMBIL PASARAN DENGAN SCORE TERBAIK (SEBANYAK 1 HINGGA 2)
+      const finalPicks = topPicks.length > 0 ? topPicks : allCandidates.slice(0, Math.min(2, allCandidates.length));
+
+      // 6. AMBIL PASARAN YANG TIDAK DI-PICK (HIGH RISK / RISIKO TINGGI)
+      const unpicked = allCandidates.filter(item => !finalPicks.includes(item)).slice(0, 4);
+
+      // 7. RENDER TOP PICKS
       const badges = [
         { label: "🔥 TOP PICK 1 (PRIMARY CHOICE)", color: "emerald" },
         { label: "💎 TOP PICK 2 (VALUE CHOICE)", color: "sky" },
-        { label: "⭐ TOP PICK 3 (BTTS)", color: "amber" },
+        { label: "⭐ TOP PICK 3 (STRONG CHOICE)", color: "amber" },
         { label: "🎯 TOP PICK 4 (ALTERNATIVE CHOICE)", color: "purple" }
       ];
 
-      // 5. GENERATE HTML CARDS
       let htmlPicks = "";
-      picks.forEach((pick, index) => {
-        const badge = badges[index];
+      finalPicks.forEach((pick, index) => {
+        const badge = badges[index] || { label: `⭐ TOP PICK ${index + 1}`, color: "emerald" };
         htmlPicks += `
           <div class="bg-slate-950 border border-${badge.color}-500/40 p-5 rounded-xl space-y-2">
             <div class="flex justify-between items-center">
@@ -532,8 +597,26 @@
           </div>
         `;
       });
-
       document.getElementById('finalPicksContainer').innerHTML = htmlPicks;
+
+      // 8. RENDER UNPICKED / RISKY PICKS
+      let htmlUnpicked = "";
+      unpicked.forEach(item => {
+        htmlUnpicked += `
+          <div class="bg-slate-950/60 border border-rose-900/40 p-3.5 rounded-xl space-y-1">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-rose-400 uppercase">${item.title}</span>
+              <span class="text-xs font-bold text-slate-500">@ ${item.odds.toFixed(2)}</span>
+            </div>
+            <div class="flex justify-between text-[11px] text-slate-500 pt-0.5">
+              <span>Hit Rate: <strong class="text-slate-300">${item.hitRate.toFixed(1)}%</strong></span>
+              <span>ROI: <strong class="${item.roi >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${item.roi >= 0 ? '+' : ''}${item.roi.toFixed(1)}%</strong></span>
+            </div>
+            <p class="text-[10px] text-rose-300/70 pt-1 border-t border-slate-900 mt-1">⚠️ <strong>Alasan Alokasi Risiko:</strong> Hit rate relatif rendah (${item.hitRate.toFixed(1)}%) atau margin ROI tidak cukup kuat.</p>
+          </div>
+        `;
+      });
+      document.getElementById('unpickedContainer').innerHTML = htmlUnpicked;
     }
   </script>
 </body>
