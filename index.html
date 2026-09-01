@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NO EGO JUST RESULTS</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- OCR TESSERACT.JS UNTUK SCAN SCREENSHOT -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-8 font-sans">
 
@@ -13,6 +15,20 @@
     <!-- HEADER -->
     <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-2xl text-center">
       <h1 class="text-3xl md:text-4xl font-black text-emerald-400 tracking-wider uppercase">NO EGO JUST RESULTS</h1>
+    </div>
+
+    <!-- SCAN SCREENSHOT DOCK (AUTO-FILL VIA OCR) -->
+    <div class="bg-slate-900 border border-dashed border-emerald-500/50 p-6 rounded-2xl text-center space-y-3 shadow-xl">
+      <span class="text-xs font-black text-emerald-400 uppercase tracking-widest block">📸 SCAN ODDS DARI SCREENSHOT (AUTO-FILL)</span>
+      
+      <input type="file" id="ssInput" accept="image/*" class="hidden" onchange="processImageOdds(this.files[0])">
+      
+      <button onclick="document.getElementById('ssInput').click()" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs font-bold px-5 py-3 rounded-xl border border-emerald-500/40 transition flex items-center justify-center gap-2 mx-auto">
+        <span>📁 UPLOAD SCREENSHOT PASARAN</span>
+      </button>
+      
+      <p class="text-[11px] text-slate-400">Atau langsung tekan <strong class="text-emerald-400">Ctrl + V</strong> di mana saja untuk paste gambar dari clipboard HP / PC.</p>
+      <div id="ocrStatus" class="text-xs font-bold text-amber-400 hidden animate-pulse">⏳ Membaca angka odds & line dari screenshot...</div>
     </div>
 
     <!-- MAIN FORM CONTAINER -->
@@ -194,10 +210,61 @@
 
   <script>
     // ============================================================
-    // 🔑 BARIS 254: PASTE API-KEY DARI DASHBOARD API-SPORTS KAMU DISINI
+    // 🔑 BARIS 268: PASTE API-KEY DARI DASHBOARD API-SPORTS KAMU DISINI
     // ============================================================
     const APISPORTS_KEY = "PASTE_API_KEY_KAMU_DISINI";
     // ============================================================
+
+    // LOGIKA SCAN SCREENSHOT CLIPBOARD (CTRL + V)
+    document.addEventListener('paste', (e) => {
+      const items = e.clipboardData.items;
+      for (let item of items) {
+        if (item.type.indexOf('image') !== -1) {
+          const file = item.getAsFile();
+          processImageOdds(file);
+          break;
+        }
+      }
+    });
+
+    // FUNGSI OCR MEMBACA TEKS DARI GAMBAR SS
+    async function processImageOdds(file) {
+      if (!file) return;
+      const statusEl = document.getElementById('ocrStatus');
+      statusEl.classList.remove('hidden');
+      statusEl.innerText = "⏳ Membaca angka odds & line dari screenshot...";
+
+      try {
+        const result = await Tesseract.recognize(file, 'eng');
+        const text = result.data.text;
+        
+        // Ekstrak angka desimal & integer dari teks SS
+        const numbers = text.match(/-?\d+\.\d+/g) || text.match(/\d+/g);
+
+        if (numbers && numbers.length >= 3) {
+          // Isi kolom odds 1X2 jika terdeteksi
+          if (numbers[0]) document.getElementById('oddsM1').value = parseFloat(numbers[0]).toFixed(2);
+          if (numbers[1]) document.getElementById('oddsX').value  = parseFloat(numbers[1]).toFixed(2);
+          if (numbers[2]) document.getElementById('oddsM2').value = parseFloat(numbers[2]).toFixed(2);
+          
+          // Auto fill sisa kolom jika terdeteksi lebih banyak angka
+          if (numbers[3]) document.getElementById('oddsHdpHome').value = parseFloat(numbers[3]).toFixed(2);
+          if (numbers[4]) document.getElementById('oddsHdpAway').value = parseFloat(numbers[4]).toFixed(2);
+          if (numbers[5]) document.getElementById('oddsOuOver').value  = parseFloat(numbers[5]).toFixed(2);
+          if (numbers[6]) document.getElementById('oddsOuUnder').value = parseFloat(numbers[6]).toFixed(2);
+
+          calculateAutoTolerance();
+          alert(`Berhasil membaca ${numbers.length} pasaran dari SS! Form terisi otomatis.`);
+        } else {
+          alert("Gambar kurang jelas atau angka desimal odds tidak terdeteksi. Silakan coba SS ulang yang lebih jernih.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Gagal memproses gambar screenshot.");
+      } finally {
+        statusEl.classList.add('hidden');
+      }
+    }
 
     function toggleAutoSample() {
       const isAuto = document.getElementById('autoSampleToggle').checked;
@@ -566,31 +633,28 @@
       // 4. URUTKAN KANDIDAT DARI SCORE TERBESAR KE TERKECIL
       allCandidates.sort((a, b) => b.score - a.score);
 
-      // 5. AMBIL CANDIDATE DENGAN PERSENTASE BAGUS (HIT RATE >= 45%) SEBAGAI TOP PICK (FLEKSIBEL 1-4 CARD)
-      const topPicks = allCandidates.filter(item => item.hitRate >= 45).slice(0, 4);
+      // 5. AMBIL 3 HINGGA 4 DARI SCORE TERATAS SEBAGAI TOP PICK (GARANSI SELALU ADA)
+      const finalPicks = allCandidates.slice(0, 3);
 
-      // JIKA TIDAK ADA YANG >= 45%, AMBIL TERBAIK DARI RATING SKOR (MINIMAL 2 TOP PICKS)
-      const finalPicks = topPicks.length > 0 ? topPicks : allCandidates.slice(0, 2);
+      // 6. AMBIL SISANYA UNTUK RISKY / UNPICKED PICKS
+      const unpicked = allCandidates.slice(3, 7);
 
-      // 6. AMBIL PASARAN SISANYA SEBAGAI UNPICKED / HIGH RISK
-      const unpicked = allCandidates.filter(item => !finalPicks.includes(item)).slice(0, 4);
-
-      // 7. RENDER TOP PICKS
-      const badges = [
-        { label: "🔥 TOP PICK 1 (PRIMARY CHOICE)", color: "emerald" },
-        { label: "💎 TOP PICK 2 (VALUE CHOICE)", color: "sky" },
-        { label: "⭐ TOP PICK 3 (STRONG CHOICE)", color: "amber" },
-        { label: "🎯 TOP PICK 4 (ALTERNATIVE CHOICE)", color: "purple" }
+      // 7. RENDER TOP PICKS DENGAN TAILWIND STYLES EKSPLISIT
+      const badgeStyles = [
+        { label: "🔥 TOP PICK 1 (PRIMARY CHOICE)", border: "border-emerald-500/40", bg: "bg-emerald-500", text: "text-emerald-400" },
+        { label: "💎 TOP PICK 2 (VALUE CHOICE)", border: "border-sky-500/40", bg: "bg-sky-500", text: "text-sky-400" },
+        { label: "⭐ TOP PICK 3 (STRONG CHOICE)", border: "border-amber-500/40", bg: "bg-amber-500", text: "text-amber-400" },
+        { label: "🎯 TOP PICK 4 (ALTERNATIVE CHOICE)", border: "border-purple-500/40", bg: "bg-purple-500", text: "text-purple-400" }
       ];
 
       let htmlPicks = "";
       finalPicks.forEach((pick, index) => {
-        const badge = badges[index] || { label: `⭐ TOP PICK ${index + 1}`, color: "emerald" };
+        const style = badgeStyles[index] || badgeStyles[0];
         htmlPicks += `
-          <div class="bg-slate-950 border border-${badge.color}-500/40 p-5 rounded-xl space-y-2">
+          <div class="bg-slate-950 border ${style.border} p-5 rounded-xl space-y-2">
             <div class="flex justify-between items-center">
-              <span class="bg-${badge.color}-500 text-slate-950 text-[10px] font-black px-2.5 py-1 rounded uppercase">${badge.label}</span>
-              <span class="text-lg font-black text-${badge.color}-400">@ ${pick.odds.toFixed(2)}</span>
+              <span class="${style.bg} text-slate-950 text-[10px] font-black px-2.5 py-1 rounded uppercase">${style.label}</span>
+              <span class="text-lg font-black ${style.text}">@ ${pick.odds.toFixed(2)}</span>
             </div>
             <h3 class="text-base font-extrabold text-white uppercase">${pick.title}</h3>
             <p class="text-xs text-slate-400 leading-relaxed border-t border-slate-900 pt-2 mt-1"><strong>📝 Notes:</strong> ${pick.note}</p>
