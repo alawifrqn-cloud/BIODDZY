@@ -566,13 +566,13 @@
       // 4. URUTKAN KANDIDAT DARI SCORE TERBESAR KE TERKECIL
       allCandidates.sort((a, b) => b.score - a.score);
 
-      // 5. FILTER: PICK HARUS POPULER DAN VALUE (Hit Rate >= 50% DAN ROI >= 0%)
-      const topPicks = allCandidates.filter(item => item.hitRate >= 50 && item.roi >= 0).slice(0, 4);
+      // 5. AMBIL CANDIDATE DENGAN PERSENTASE BAGUS (HIT RATE >= 45%) SEBAGAI TOP PICK (FLEKSIBEL 1-4 CARD)
+      const topPicks = allCandidates.filter(item => item.hitRate >= 45).slice(0, 4);
 
-      // JIKA TIDAK ADA YANG MEMENUHI SYARAT KETAT, AMBIL PASARAN DENGAN SCORE TERBAIK (SEBANYAK 1 HINGGA 2)
-      const finalPicks = topPicks.length > 0 ? topPicks : allCandidates.slice(0, Math.min(2, allCandidates.length));
+      // JIKA TIDAK ADA YANG >= 45%, AMBIL TERBAIK DARI RATING SKOR (MINIMAL 2 TOP PICKS)
+      const finalPicks = topPicks.length > 0 ? topPicks : allCandidates.slice(0, 2);
 
-      // 6. AMBIL PASARAN YANG TIDAK DI-PICK (HIGH RISK / RISIKO TINGGI)
+      // 6. AMBIL PASARAN SISANYA SEBAGAI UNPICKED / HIGH RISK
       const unpicked = allCandidates.filter(item => !finalPicks.includes(item)).slice(0, 4);
 
       // 7. RENDER TOP PICKS
