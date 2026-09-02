@@ -74,7 +74,7 @@
         </div>
       </div>
 
-      <!-- 2. BOTH TEAMS TO SCORE (BTTS) -> TEPAT DI BAWAH MONEYLINE -->
+      <!-- 2. BOTH TEAMS TO SCORE (BTTS) -->
       <div class="bg-slate-950/80 p-5 rounded-xl border border-slate-800 space-y-3">
         <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider block">BOTH TEAMS TO SCORE (BTTS)</span>
         <div class="grid grid-cols-2 gap-4">
@@ -193,11 +193,7 @@
   </div>
 
   <script>
-    // ============================================================
-    // 🔑 BARIS 248: PASTE API-KEY DARI DASHBOARD API-SPORTS KAMU DISINI
-    // ============================================================
-    const APISPORTS_KEY = "PASTE_API_KEY_KAMU_DISINI";
-    // ============================================================
+    const APISPORTS_KEY = "e702ac438b6cb005f63f5fdfd6197b8f";
 
     function toggleAutoSample() {
       const isAuto = document.getElementById('autoSampleToggle').checked;
@@ -319,11 +315,9 @@
     }
 
     async function getTeamId(teamName) {
-      if (APISPORTS_KEY === "e702ac438b6cb005f63f5fdfd6197b8f") return null;
+      if (APISPORTS_KEY === "PASTE_API_KEY_KAMU_DISINI" || !APISPORTS_KEY) return null;
       const res = await fetch(`https://v3.football.api-sports.io/teams?search=${encodeURIComponent(teamName)}`, {
-        headers: {
-          'x-apisports-key': APISPORTS_KEY
-        }
+        headers: { 'x-apisports-key': APISPORTS_KEY }
       });
       const data = await res.json();
       return data.response && data.response.length > 0 ? data.response[0].team.id : null;
@@ -331,9 +325,7 @@
 
     async function getH2HData(hId, aId, count) {
       const res = await fetch(`https://v3.football.api-sports.io/fixtures/headtohead?h2h=${hId}-${aId}&last=${count}`, {
-        headers: {
-          'x-apisports-key': APISPORTS_KEY
-        }
+        headers: { 'x-apisports-key': APISPORTS_KEY }
       });
       const data = await res.json();
       return data.response || [];
@@ -368,22 +360,18 @@
       const rawHdpAwayLine = document.getElementById('hdpAwayLine').value.trim() || "+1";
       const oHdpHome = parseFloat(document.getElementById('oddsHdpHome').value) || 1.64;
       const oHdpAway = parseFloat(document.getElementById('oddsHdpAway').value) || 2.20;
-      const lineOu = document.getElementById('ouOverLine').value.trim() || "3.75";
+      const lineOu = document.getElementById('ouOverLine').value.trim() || "2.5";
 
       const hitM1Pct = (homeWins / total) * 100 || 65.0;
       const hitXPct  = (draws / total) * 100 || 15.0;
       const hitM2Pct = (awayWins / total) * 100 || 20.0;
       
-      const h2hBttsPct = (bttsCount / total) * 100 || 73.5;
+      const h2hBttsPct = (bttsCount / total) * 100 || 69.4;
       const impliedBttsPct = oBttsYes > 0 ? (1 / oBttsYes) * 100 : 70;
       const bttsPct = (h2hBttsPct * 0.6) + (impliedBttsPct * 0.4);
 
-      const over25Pct = (over25Count / total) * 100 || 53.4;
+      const over25Pct = (over25Count / total) * 100 || 53.0;
       const underPct = 100 - over25Pct;
-
-      const roiM1 = ((hitM1Pct / 100) * oM1 - 1) * 100;
-      const roiX  = ((hitXPct / 100) * oX - 1) * 100;
-      const roiM2 = ((hitM2Pct / 100) * oM2 - 1) * 100;
 
       document.getElementById('matchInfoBadge').innerText = `${total} MATCH SAMPLE`;
       document.getElementById('totalH2H').innerText = total;
@@ -398,7 +386,7 @@
       }
       document.getElementById('matchKarakter').innerText = karakterTxt;
 
-      renderDashboard(home, away, hitM1Pct, roiM1, oM1, hitXPct, roiX, oX, hitM2Pct, roiM2, oM2, over25Pct, underPct, oOuOver, oOuUnder, rawHdpHomeLine, rawHdpAwayLine, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo);
+      renderDashboard(home, away, hitM1Pct, hitXPct, hitM2Pct, oM1, oX, oM2, over25Pct, underPct, oOuOver, oOuUnder, rawHdpHomeLine, rawHdpAwayLine, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo);
     }
 
     function runFallbackAnalysis(home, away, count) {
@@ -416,7 +404,7 @@
       const rawHdpAwayLine = document.getElementById('hdpAwayLine').value.trim() || "+1";
       const oHdpHome = parseFloat(document.getElementById('oddsHdpHome').value) || 1.64;
       const oHdpAway = parseFloat(document.getElementById('oddsHdpAway').value) || 2.20;
-      const lineOu = document.getElementById('ouOverLine').value.trim() || "3.75";
+      const lineOu = document.getElementById('ouOverLine').value.trim() || "2.5";
 
       const hitM1Pct = (1 / oM1) * 100;
       const hitXPct  = (1 / oX) * 100;
@@ -424,11 +412,7 @@
       
       const over25Pct = (1 / oOuOver) * 100;
       const underPct = 100 - over25Pct;
-      const bttsPct = oBttsYes > 0 ? (1 / oBttsYes) * 100 : 73.5;
-
-      const roiM1 = ((hitM1Pct / 100) * oM1 - 1) * 100;
-      const roiX  = ((hitXPct / 100) * oX - 1) * 100;
-      const roiM2 = ((hitM2Pct / 100) * oM2 - 1) * 100;
+      const bttsPct = oBttsYes > 0 ? (1 / oBttsYes) * 100 : 69.4;
 
       document.getElementById('matchInfoBadge').innerText = `${count} MATCH SAMPLE`;
       document.getElementById('totalH2H').innerText = `${count} (PROPOSED)`;
@@ -443,15 +427,29 @@
       }
       document.getElementById('matchKarakter').innerText = karakterTxt;
 
-      renderDashboard(home, away, hitM1Pct, roiM1, oM1, hitXPct, roiX, oX, hitM2Pct, roiM2, oM2, over25Pct, underPct, oOuOver, oOuUnder, rawHdpHomeLine, rawHdpAwayLine, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo);
+      renderDashboard(home, away, hitM1Pct, hitXPct, hitM2Pct, oM1, oX, oM2, over25Pct, underPct, oOuOver, oOuUnder, rawHdpHomeLine, rawHdpAwayLine, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo);
     }
 
-    function renderDashboard(home, away, hitM1, roiM1, oM1, hitX, roiX, oX, hitM2, roiM2, oM2, over25Pct, underPct, oOuOver, oOuUnder, rawHdpHomeLine, rawHdpAwayLine, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo) {
+    function renderDashboard(home, away, hitM1, hitX, hitM2, oM1, oX, oM2, over25Pct, underPct, oOuOver, oOuUnder, rawHdpHomeLine, rawHdpAwayLine, oHdpHome, oHdpAway, lineOu, bttsPct, oBttsYes, oBttsNo) {
       const homeCaps = home.toUpperCase();
       const awayCaps = away.toUpperCase();
       const lineOuCaps = lineOu.toUpperCase();
 
-      // CARDS ROI TOPPER
+      // 1. HITUNG ROI DAN EVALUASI UNTUK SEMUA OPSI PASARAN DULUAN
+      const roiM1 = ((hitM1 / 100) * oM1 - 1) * 100;
+      const roiX  = ((hitX / 100) * oX - 1) * 100;
+      const roiM2 = ((hitM2 / 100) * oM2 - 1) * 100;
+
+      const roiHdpHome = ((hitM1 / 100) * oHdpHome - 1) * 100;
+      const roiHdpAway = ((hitM2 / 100) * oHdpAway - 1) * 100;
+      
+      const roiOver  = ((over25Pct / 100) * oOuOver - 1) * 100;
+      const roiUnder = ((underPct / 100) * oOuUnder - 1) * 100;
+
+      const roiBttsYes = ((bttsPct / 100) * oBttsYes - 1) * 100;
+      const roiBttsNo  = (((100 - bttsPct) / 100) * oBttsNo - 1) * 100;
+
+      // 2. RENDER CARDS ROI TOPPER SAMA DENGAN DUA VARIABEL ROI YANG SUDAH DIDEFINISIKAN
       document.getElementById('roiCardsContainer').innerHTML = `
         <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
           <div class="flex justify-between items-center"><span class="text-xs font-black text-slate-100 uppercase">${homeCaps} 1X2</span><span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded">MEDIUM</span></div>
@@ -472,17 +470,7 @@
         </div>
       `;
 
-      // 1. HITUNG ROI UNTUK SEMUA OPSI PASARAN
-      const roiHdpHome = ((hitM1 / 100) * oHdpHome - 1) * 100;
-      const roiHdpAway = ((hitM2 / 100) * oHdpAway - 1) * 100;
-      
-      const roiOver  = ((over25Pct / 100) * oOuOver - 1) * 100;
-      const roiUnder = ((underPct / 100) * oOuUnder - 1) * 100;
-
-      const roiBttsYes = ((bttsPct / 100) * oBttsYes - 1) * 100;
-      const roiBttsNo  = (((100 - bttsPct) / 100) * oBttsNo - 1) * 100;
-
-      // 2. DAFTAR SELURUH CANDIDATE PASARAN
+      // 3. DAFTAR SELURUH CANDIDATE PASARAN
       const allCandidates = [
         {
           type: "HANDICAP HOME",
@@ -558,21 +546,21 @@
         }
       ];
 
-      // 3. RUMUS BOBOT SCORE = (HitRate x 0.6) + (ROI x 0.4)
+      // 4. RUMUS BOBOT SCORE = (HitRate x 0.6) + (ROI x 0.4)
       allCandidates.forEach(item => {
         item.score = (item.hitRate * 0.6) + (item.roi * 0.4);
       });
 
-      // 4. URUTKAN KANDIDAT DARI SCORE TERBESAR KE TERKECIL
+      // 5. URUTKAN KANDIDAT DARI SCORE TERBESAR KE TERKECIL
       allCandidates.sort((a, b) => b.score - a.score);
 
-      // 5. AMBIL 3 HINGGA 4 DARI SCORE TERATAS SEBAGAI TOP PICK
+      // 6. AMBIL 3 HINGGA 4 DARI SCORE TERATAS SEBAGAI TOP PICK
       const finalPicks = allCandidates.slice(0, 3);
 
-      // 6. AMBIL SISANYA UNTUK RISKY / UNPICKED PICKS
+      // 7. AMBIL SISANYA UNTUK RISKY / UNPICKED PICKS
       const unpicked = allCandidates.slice(3, 7);
 
-      // 7. RENDER TOP PICKS DENGAN TAILWIND STYLES EKSPLISIT
+      // 8. RENDER TOP PICKS DENGAN TAILWIND STYLES EKSPLISIT
       const badgeStyles = [
         { label: "🔥 TOP PICK 1 (PRIMARY CHOICE)", border: "border-emerald-500/40", bg: "bg-emerald-500", text: "text-emerald-400" },
         { label: "💎 TOP PICK 2 (VALUE CHOICE)", border: "border-sky-500/40", bg: "bg-sky-500", text: "text-sky-400" },
@@ -596,7 +584,7 @@
       });
       document.getElementById('finalPicksContainer').innerHTML = htmlPicks;
 
-      // 8. RENDER UNPICKED / RISKY PICKS
+      // 9. RENDER UNPICKED / RISKY PICKS
       let htmlUnpicked = "";
       unpicked.forEach(item => {
         htmlUnpicked += `
